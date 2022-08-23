@@ -1,4 +1,4 @@
-# BeerTinder
+# BeerTinder (specification in progress)
 This is just a study project using the Punk API (https://punkapi.com/)
 
 ## --- Specification ---
@@ -23,7 +23,7 @@ This is just a study project using the Punk API (https://punkapi.com/)
 5. Fragment with ViewPager2
 6. Fragment with beer details
 
-### Screens logic:
+## Screens logic:
 
 #### Splash screen
 
