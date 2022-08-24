@@ -35,11 +35,11 @@ Just holds all fragments
 
 #### BeerListFragment
 Displays list of beers loaded from API.
-User can see the list of all beer, add beer to the Favorite screen, click on the beer and see it's details.
+User can see the list of all beer, add beer to the Favorite screen, click on the beer and see its details.
 
 #### FavBeerFragment
 Displays list of favorite beer saved on the local database.
-User can click on beer and see it's details, delete beer from favorite.
+User can click on beer and see its details, delete beer from favorite.
 
 #### BeerTinderFragment
 This is random beer section. Displays cards with beer (like a tinder, badoo and another date apps). User can like or dislike it by click the button with correct icon or just swipe the card horizontally (right or left).
