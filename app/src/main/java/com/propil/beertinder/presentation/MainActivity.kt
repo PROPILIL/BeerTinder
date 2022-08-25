@@ -1,7 +1,8 @@
-package com.propil.beertinder
+package com.propil.beertinder.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.propil.beertinder.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
