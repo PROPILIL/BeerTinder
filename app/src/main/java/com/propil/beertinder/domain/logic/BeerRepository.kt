@@ -12,10 +12,10 @@ interface BeerRepository {
     suspend fun getBeer(beerId: Long): Beer
 
     //for beerTinder section
-    suspend fun getRandomBeer(): Beer
+    suspend fun loadRandomBeer(): Beer
 
     //for the beerEntity favorite
     suspend fun deleteBeer(beerId: Long)
 
-    fun loadBeerList(): LiveData<List<Beer>>
+    suspend fun loadBeerList(): List<Beer>
 }
