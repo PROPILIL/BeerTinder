@@ -3,5 +3,5 @@ package com.propil.beertinder.domain.logic
 class LoadBeerListUseCase(
     private val repository: BeerRepository
 ) {
-    operator fun invoke() = repository.loadBeerList()
+    suspend operator fun invoke() = repository.loadBeerList()
 }
