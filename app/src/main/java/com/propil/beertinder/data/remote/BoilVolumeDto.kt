@@ -1,9 +1,9 @@
-package com.propil.beertinder.domain.model
+package com.propil.beertinder.data.remote
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BoilVolume(
+data class BoilVolumeDto(
     val value: Double,
     val unit: String
 )

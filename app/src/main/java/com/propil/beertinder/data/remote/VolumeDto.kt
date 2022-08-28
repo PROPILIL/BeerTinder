@@ -1,9 +1,9 @@
-package com.propil.beertinder.domain.model
+package com.propil.beertinder.data.remote
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Volume(
+data class VolumeDto(
     val value: Double,
     val unit: String
 )
