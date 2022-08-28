@@ -3,9 +3,9 @@ package com.propil.beertinder.domain.logic
 import com.propil.beertinder.domain.model.Beer
 
 class GetRandomBeerUseCase(
-    private val repository: BeerTinderRepository) {
+    private val repository: BeerRepository) {
 
-    operator fun invoke(): Beer {
+    suspend operator fun invoke(): Beer {
         return repository.getRandomBeer()
     }
 }

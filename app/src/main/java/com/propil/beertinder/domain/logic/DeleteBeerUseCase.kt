@@ -3,9 +3,9 @@ package com.propil.beertinder.domain.logic
 import com.propil.beertinder.domain.model.Beer
 
 class DeleteBeerUseCase(
-    private val repository: BeerTinderRepository
+    private val repository: BeerRepository
 ) {
-    operator fun invoke(beer: Beer) {
-        repository.deleteBeer(beer)
+    suspend operator fun invoke(beerId: Long) {
+        repository.deleteBeer(beerId)
     }
 }

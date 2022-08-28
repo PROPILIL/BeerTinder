@@ -1,7 +1,8 @@
 package com.propil.beertinder.data.mapper
 
 import com.propil.beertinder.data.database.BeerDbModel
-import com.propil.beertinder.data.remote.BeerDto
+import com.propil.beertinder.data.remote.model.BeerDto
+import com.propil.beertinder.domain.model.Beer
 
 class BeerMapper {
 
@@ -15,6 +16,16 @@ class BeerMapper {
             abv = beerDto.abv,
             foodPairing = beerDto.foodPairing
         )
+
+    fun mapDbModelToEntity(beerDbModel: BeerDbModel) = Beer(
+        id = beerDbModel.id,
+        name = beerDbModel.name,
+        tagline = beerDbModel.tagline,
+        description = beerDbModel.description,
+        imageUrl = beerDbModel.imageUrl,
+        abv = beerDbModel.abv,
+        foodPairing = beerDbModel.foodPairing
+    )
 
 
 }
