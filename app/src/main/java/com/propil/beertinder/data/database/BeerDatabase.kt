@@ -9,6 +9,9 @@ import androidx.room.TypeConverters
 @Database(entities = [BeerDbModel::class], version = 1, exportSchema = false)
 @TypeConverters(BeerConverter::class)
 abstract class BeerDatabase: RoomDatabase() {
+
+    abstract fun beerDao(): BeerDao
+
     companion object {
 
         private var INSTANCE: BeerDatabase? = null

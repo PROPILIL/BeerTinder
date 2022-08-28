@@ -1,4 +1,4 @@
-package com.propil.beertinder.data.remote
+package com.propil.beertinder.data.remote.model
 
 import androidx.room.Embedded
 import kotlinx.serialization.Serializable
