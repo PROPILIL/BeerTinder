@@ -1,6 +1,5 @@
-package com.propil.beertinder.domain.model
+package com.propil.beertinder.data.remote
 
-import androidx.room.Embedded
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,7 +12,6 @@ data class Ingredients(
 @Serializable
 data class Hops(
     val name: String?,
-    @Embedded
     val amount: HopsAmount,
     val add: String?,
     val attribute: String?,
@@ -22,7 +20,6 @@ data class Hops(
 @Serializable
 data class Malt(
     val name: String?,
-    @Embedded
     val amount: MaltAmount
 )
 

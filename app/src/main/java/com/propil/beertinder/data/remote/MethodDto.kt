@@ -1,6 +1,5 @@
-package com.propil.beertinder.domain.model
+package com.propil.beertinder.data.remote
 
-import androidx.room.Embedded
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 
@@ -8,7 +7,6 @@ import kotlinx.serialization.json.JsonNames
 data class Method(
     @JsonNames("mash_temp")
     val mashTemp: List<MashTemp>?,
-    @Embedded
     val fermentation: Fermentation?,
     val twist: String?
 )

@@ -8,9 +8,12 @@ interface BeerTinderRepository {
     //for the beer list
     fun getBeerList() : LiveData<List<Beer>>
 
-    //for the beer favorites and beer "tinder"
+    //for the beer favorites
     fun getBeer(beerId: Long): Beer
 
-    //for the beer favorite
-    fun deleteBeer(beer: Beer)
+    //for beerTinder section
+    fun getRandomBeer(): Beer
+
+    //for the beerEntity favorite
+    fun deleteBeer(beerEntity: Beer)
 }
