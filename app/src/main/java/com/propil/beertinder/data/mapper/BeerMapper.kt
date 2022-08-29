@@ -3,6 +3,7 @@ package com.propil.beertinder.data.mapper
 import com.propil.beertinder.data.database.BeerDbModel
 import com.propil.beertinder.data.remote.model.BeerDto
 import com.propil.beertinder.domain.model.Beer
+import retrofit2.Call
 
 class BeerMapper {
 
@@ -36,6 +37,4 @@ class BeerMapper {
         abv = beerDto.abv,
         foodPairing = beerDto.foodPairing
     )
-
-
 }
