@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.propil.beertinder.data.database.BeerDatabase
 import com.propil.beertinder.data.mapper.BeerMapper
+import com.propil.beertinder.data.remote.model.BeerDto
 import com.propil.beertinder.data.remote.network.PunkApiFactory
 import com.propil.beertinder.data.remote.network.PunkApiService
 import com.propil.beertinder.domain.logic.BeerRepository
@@ -38,7 +39,10 @@ class BeerRepositoryImpl(application: Application) : BeerRepository {
         beerDao.deleteFavoriteBeer(beerId)
     }
 
-    override suspend fun loadBeerList(): List<Beer> {
-        TODO()
+    override suspend fun loadBeerList(page: Int, per_page: Int): List<Beer> {
+        val dtoList = punkApiService.loadBeerList(page, per_page)
+        return dtoList.map {
+            mapper.mapDtoToEntity(it)
+        }
     }
 }
