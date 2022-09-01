@@ -5,7 +5,7 @@ import com.propil.beertinder.domain.model.Beer
 class GetBeerUseCase(
     private val repository: BeerRepository
 ) {
-    suspend operator fun invoke(beerId: Long): Beer {
+    suspend operator fun invoke(beerId: Int): Beer {
         return repository.getBeer(beerId)
     }
 }

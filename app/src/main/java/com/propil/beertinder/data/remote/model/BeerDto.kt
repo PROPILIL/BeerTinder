@@ -4,14 +4,9 @@ import kotlinx.serialization.Serializable
 
 import kotlinx.serialization.SerialName
 
-@Serializable
-data class BeerDto(
-    @Serializable(with = BeerListSerializer::class)
-    val beerItem: List<BeerItem>
-)
 
 @Serializable
-data class BeerItem(
+data class BeerDto(
     @SerialName("id")
     val id: Int, // 192
     @SerialName("name")
