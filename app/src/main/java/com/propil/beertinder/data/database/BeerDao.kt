@@ -16,9 +16,9 @@ interface BeerDao {
     fun getBeerList(): LiveData<List<BeerDbModel>>
 
     @Query("SELECT * FROM beers WHERE id = :beerId LIMIT 1")
-    suspend fun getBeer(beerId: Long): BeerDbModel
+    suspend fun getBeer(beerId: Int): BeerDbModel
 
     @Query("DELETE FROM beers WHERE id = :beerId")
-    suspend fun deleteFavoriteBeer(beerId: Long)
+    suspend fun deleteFavoriteBeer(beerId: Int)
 
 }

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "beers")
 data class BeerDbModel(
     @PrimaryKey
-    val id: Long,
+    val id: Int,
     val name: String?,
     val tagline: String?,
     val description: String?,

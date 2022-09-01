@@ -11,11 +11,15 @@ import retrofit2.create
 object PunkApiFactory {
 
     private const val BASE_URL = "https://api.punkapi.com/v2/"
-    private val contentType = "application/json".toMediaType()
+     val contentType = "application/json".toMediaType()
 
     private fun createOkHttpClient(): OkHttpClient {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+
+
+
+
 
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
@@ -29,5 +33,6 @@ object PunkApiFactory {
         .baseUrl(BASE_URL)
         .build()
 
+    // an apiService instance
     val punkApiService: PunkApiService = retrofit.create(PunkApiService::class.java)
 }

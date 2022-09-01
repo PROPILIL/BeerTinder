@@ -5,11 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.propil.beertinder.data.database.BeerDatabase
 import com.propil.beertinder.data.mapper.BeerMapper
-import com.propil.beertinder.data.remote.model.BeerDto
 import com.propil.beertinder.data.remote.network.PunkApiFactory
-import com.propil.beertinder.data.remote.network.PunkApiService
 import com.propil.beertinder.domain.logic.BeerRepository
 import com.propil.beertinder.domain.model.Beer
+import kotlinx.serialization.json.Json
+import retrofit2.Response
+import java.io.IOException
 
 class BeerRepositoryImpl(application: Application) : BeerRepository {
 
@@ -25,24 +26,22 @@ class BeerRepositoryImpl(application: Application) : BeerRepository {
         }
     }
 
-    override suspend fun getBeer(beerId: Long): Beer {
+    override suspend fun getBeer(beerId: Int): Beer {
         val dbModel = beerDao.getBeer(beerId)
         return mapper.mapDbModelToEntity(dbModel)
     }
 
     override suspend fun loadRandomBeer(): Beer {
-        val modelDto = punkApiService.loadRandomBeer()
-        return mapper.mapDtoToEntity(modelDto)
+        val response = punkApiService.loadRandomBeer()
+        return mapper.mapResponseToEntity(response)
     }
 
-    override suspend fun deleteBeer(beerId: Long) {
+    override suspend fun deleteBeer(beerId: Int) {
         beerDao.deleteFavoriteBeer(beerId)
     }
 
     override suspend fun loadBeerList(page: Int, per_page: Int): List<Beer> {
-        val dtoList = punkApiService.loadBeerList(page, per_page)
-        return dtoList.map {
-            mapper.mapDtoToEntity(it)
-        }
+        val response = punkApiService.loadBeerList(page, per_page)
+        return mapper.mapResponseListToEntityList(response)
     }
 }
