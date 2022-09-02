@@ -6,22 +6,26 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.propil.beertinder.R
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: TestViewModel
+    private lateinit var viewModel: BeerListViewModel
+    private lateinit var button: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewModel = ViewModelProvider(this)[TestViewModel::class.java]
+        button = findViewById(R.id.button)
+        button.setOnClickListener {
+            loadDetails()
+        }
+        viewModel = ViewModelProvider(this)[BeerListViewModel::class.java]
         lifecycleScope.launch(Dispatchers.Main) {
             loadText()
-            loadList()
 
         }
 
@@ -35,6 +39,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadList(){
         viewModel.beerList.observe(this, Observer {
+            Log.d("TAG", "$it")
+        })
+    }
+
+    private fun loadDetails(){
+        viewModel.beerDetails.observe(this, Observer {
             Log.d("TAG", "$it")
         })
     }

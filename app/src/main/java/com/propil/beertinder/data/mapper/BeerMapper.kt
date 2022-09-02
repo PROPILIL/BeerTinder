@@ -40,10 +40,6 @@ class BeerMapper {
         foodPairing = beerDto.foodPairing
     )
 
-//    fun mapDtoToEntit(response: Json): BeerDto {
-//        return response.decodeFromString(BeerDto.serializer(), response.toString().substring(1, response.toString().length - 1))
-//    }
-
     fun mapResponseToEntity(response: Response<List<BeerDto>>) : Beer {
         return response.body()?.let { mapDtoToEntity(it[0]) }!!
     }
