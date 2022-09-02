@@ -26,21 +26,11 @@ class BeerListViewModel(application: Application) : AndroidViewModel(application
         get() = _selectedBeer
 
 
-    val randomBeer = liveData(Dispatchers.IO) {
-        val response = loadRandomBeerUseCase.invoke()
-        _selectedBeer.postValue(response)
-        emit(response)
-    }
-
     val beerList = liveData(Dispatchers.IO) {
         val response = loadBeerList.invoke(1, 10)
         emit(response)
     }
 
-    val beerDetails = liveData(Dispatchers.IO) {
-        val response = _selectedBeer.value?.id?.let { loadBeerDetailsUseCase.invoke(it) }
-        emit(response)
-    }
 
 }
 
