@@ -31,11 +31,6 @@ class BeerRepositoryImpl(application: Application) : BeerRepository {
         return mapper.mapDbModelToEntity(dbModel)
     }
 
-    override suspend fun loadRandomBeer(): Beer {
-        val response = punkApiService.loadRandomBeer()
-        return mapper.mapResponseToEntity(response)
-    }
-
     override suspend fun deleteBeer(beerId: Int) {
         beerDao.deleteFavoriteBeer(beerId)
     }
@@ -44,4 +39,15 @@ class BeerRepositoryImpl(application: Application) : BeerRepository {
         val response = punkApiService.loadBeerList(page, per_page)
         return mapper.mapResponseListToEntityList(response)
     }
+
+    override suspend fun loadRandomBeer(): Beer {
+        val response = punkApiService.loadRandomBeer()
+        return mapper.mapResponseToEntity(response)
+    }
+
+    override suspend fun loadBeerDetails(beerId: Int): Beer {
+        val response = punkApiService.loadBeerDetails(beerId)
+        return mapper.mapResponseToEntity(response)
+    }
 }
+

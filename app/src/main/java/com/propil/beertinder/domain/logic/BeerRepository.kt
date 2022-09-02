@@ -20,5 +20,7 @@ interface BeerRepository {
     //for beerTinder section
     suspend fun loadRandomBeer(): Beer
 
+    suspend fun loadBeerDetails(beerId: Int): Beer
+
 
 }
