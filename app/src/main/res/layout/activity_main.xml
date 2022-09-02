@@ -17,8 +17,7 @@
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      tools:layout="@layout/beer_detail_fragment"
-      />
+      tools:layout="@layout/beer_list_fragment" />
 
   <com.google.android.material.bottomnavigation.BottomNavigationView
       android:id="@+id/bottom_navigation"
