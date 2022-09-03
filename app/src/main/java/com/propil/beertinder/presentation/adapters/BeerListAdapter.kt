@@ -34,7 +34,6 @@ class BeerListAdapter :
     }
 
     override fun onBindViewHolder(holder: BeerListViewHolder, position: Int) {
-
         with(holder) {
             with(getItem(position)) {
                 binding.beerName.text = this.name

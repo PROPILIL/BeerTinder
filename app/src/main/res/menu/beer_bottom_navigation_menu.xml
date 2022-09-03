@@ -13,7 +13,7 @@
         android:title="Favorite"/>
 
     <item
-        android:id="beer_tinder"
+        android:id="@+id/beer_tinder"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_whatshot_24"
         android:title="Random"/>
