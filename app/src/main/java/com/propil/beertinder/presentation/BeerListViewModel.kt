@@ -18,13 +18,6 @@ class BeerListViewModel(application: Application) : AndroidViewModel(application
 
     private val repository = BeerRepositoryImpl(application)
     private val loadBeerList = LoadBeerListUseCase(repository)
-    private val loadRandomBeerUseCase = LoadRandomBeerUseCase(repository)
-    private val loadBeerDetailsUseCase = LoadBeerDetailsUseCase(repository)
-
-    private val _selectedBeer = MutableLiveData<Beer>()
-    val selectedBeer: LiveData<Beer>
-        get() = _selectedBeer
-
 
     val beerList = liveData(Dispatchers.IO) {
         val response = loadBeerList.invoke(1, 10)
