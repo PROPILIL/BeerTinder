@@ -41,6 +41,7 @@ class BeerDetailsFragment : Fragment() {
         viewmodel = ViewModelProvider(this)[BeerDetailViewModel::class.java]
         parseArgs()
         launchDetails()
+        addToFavorite()
 
     }
 
@@ -51,12 +52,18 @@ class BeerDetailsFragment : Fragment() {
                 viewmodel.beer.observe(viewLifecycleOwner) {
                     binding.beerName.text = it.name
                     binding.beerAbv.text = it.abv.toString()
-                    binding.beerImage
+                    binding.beerImage.load(it.imageUrl)
                     binding.beerTagline.text = it.tagline
                     binding.beerDescription.text = it.description
                     binding.beerFoodPairing.text = it.foodPairing?.joinToString(",", postfix = ",")
                 }
             }
+        }
+    }
+
+    private fun addToFavorite() {
+        binding.toFavoriteButton.setOnClickListener {
+            viewmodel.addToFavorite()
         }
     }
 

@@ -8,9 +8,6 @@ import com.propil.beertinder.data.mapper.BeerMapper
 import com.propil.beertinder.data.remote.network.PunkApiFactory
 import com.propil.beertinder.domain.logic.BeerRepository
 import com.propil.beertinder.domain.model.Beer
-import kotlinx.serialization.json.Json
-import retrofit2.Response
-import java.io.IOException
 
 class BeerRepositoryImpl(application: Application) : BeerRepository {
 
@@ -24,6 +21,11 @@ class BeerRepositoryImpl(application: Application) : BeerRepository {
                 mapper.mapDbModelToEntity(it)
             }
         }
+    }
+
+    override suspend fun addBeerToFavorite(beer: Beer) {
+        val dbModel = mapper.mapEntityToDbModel(beer)
+        beerDao.addFavoriteBeer(dbModel)
     }
 
     override suspend fun getBeer(beerId: Int): Beer {

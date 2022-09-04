@@ -30,6 +30,16 @@ class BeerMapper {
         foodPairing = beerDbModel.foodPairing
     )
 
+    fun mapEntityToDbModel(beer: Beer) = BeerDbModel (
+        id = beer.id,
+        name = beer.name,
+        tagline = beer.tagline,
+        description = beer.description,
+        imageUrl = beer.imageUrl,
+        abv = beer.abv,
+        foodPairing = beer.foodPairing
+            )
+
     fun mapDtoToEntity(beerDto: BeerDto) = Beer(
         id = beerDto.id,
         name = beerDto.name,
