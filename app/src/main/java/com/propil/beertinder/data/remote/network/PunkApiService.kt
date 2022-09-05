@@ -1,7 +1,6 @@
 package com.propil.beertinder.data.remote.network
 
 import com.propil.beertinder.data.remote.model.BeerDto
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -16,7 +15,7 @@ interface PunkApiService {
     ): Response<List<BeerDto>>
 
     @GET("beers/random")
-    suspend fun loadRandomBeer(): Response<List<BeerDto>>
+    suspend fun loadRandomBeer(): List<BeerDto>
 
     @GET("beers/{id}")
     suspend fun loadBeerDetails(@Path("id") id: Int): Response<List<BeerDto>>
