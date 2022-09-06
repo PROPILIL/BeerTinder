@@ -29,7 +29,7 @@ class BeerListViewModel(application: Application) : AndroidViewModel(application
         emit(response)
     }
 
-    private fun load(): Flow<PagingData<Beer>> {
+    fun load(): Flow<PagingData<Beer>> {
         return repository.loadData()
             .map {
                 it.map { mapper.mapDtoToEntity(it) }
