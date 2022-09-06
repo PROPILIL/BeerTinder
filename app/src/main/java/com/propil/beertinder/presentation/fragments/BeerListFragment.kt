@@ -1,4 +1,4 @@
-package com.propil.beertinder.presentation
+package com.propil.beertinder.presentation.fragments
 
 import android.os.Bundle
 import android.util.Log
