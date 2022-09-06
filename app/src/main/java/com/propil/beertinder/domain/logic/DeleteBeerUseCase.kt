@@ -5,7 +5,7 @@ import com.propil.beertinder.domain.model.Beer
 class DeleteBeerUseCase(
     private val repository: BeerRepository
 ) {
-    suspend operator fun invoke(beerId: Int) {
-        repository.deleteBeer(beerId)
+    suspend operator fun invoke(beer: Beer) {
+        repository.deleteBeer(beer)
     }
 }

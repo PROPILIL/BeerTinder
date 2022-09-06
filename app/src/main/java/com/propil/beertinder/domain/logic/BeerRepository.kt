@@ -15,7 +15,7 @@ interface BeerRepository {
     suspend fun addBeerToFavorite(beer: Beer)
 
     //for the beerEntity favorite
-    suspend fun deleteBeer(beerId: Int)
+    suspend fun deleteBeer(beer: Beer)
 
     suspend fun loadBeerList(page: Int, per_page: Int): List<Beer>
 

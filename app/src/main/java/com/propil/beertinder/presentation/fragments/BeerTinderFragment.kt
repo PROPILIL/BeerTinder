@@ -1,9 +1,10 @@
-package com.propil.beertinder.presentation
+package com.propil.beertinder.presentation.fragments
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.liveData
 import kotlinx.coroutines.Dispatchers
 
-class BeerTinderFragment {
+class BeerTinderFragment: Fragment() {
 
 
 //    val randomBeer = liveData(Dispatchers.IO) {
@@ -11,5 +12,9 @@ class BeerTinderFragment {
 //        _selectedBeer.postValue(response)
 //        emit(response)
 //    }
-
+companion object {
+    fun newInstance(): BeerTinderFragment {
+        return BeerTinderFragment()
+    }
+}
 }

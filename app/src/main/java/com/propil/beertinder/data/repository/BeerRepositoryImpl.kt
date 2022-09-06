@@ -2,6 +2,7 @@ package com.propil.beertinder.data.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -21,6 +22,9 @@ class BeerRepositoryImpl(application: Application) : BeerRepository {
     private val mapper = BeerMapper()
     private val punkApiService = PunkApiFactory.punkApiService
 
+    private val beerListLocal = sortedSetOf<Beer>({ o1, o2 -> o1.id.compareTo(o2.id) })
+    private val beerListLocalLiveData = MutableLiveData<List<Beer>>()
+
     override fun getBeerList(): LiveData<List<Beer>> {
         return Transformations.map(beerDao.getBeerList()) {
             it.map {
@@ -39,8 +43,8 @@ class BeerRepositoryImpl(application: Application) : BeerRepository {
         return mapper.mapDbModelToEntity(dbModel)
     }
 
-    override suspend fun deleteBeer(beerId: Int) {
-        beerDao.deleteFavoriteBeer(beerId)
+    override suspend fun deleteBeer(beer: Beer) {
+        beerDao.deleteFavoriteBeer(beer.id)
     }
 
     override suspend fun loadBeerList(page: Int, per_page: Int): List<Beer> {
