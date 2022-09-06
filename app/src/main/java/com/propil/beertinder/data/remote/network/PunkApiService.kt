@@ -15,7 +15,7 @@ interface PunkApiService {
     ): Response<List<BeerDto>>
 
     @GET("beers/random")
-    suspend fun loadRandomBeer(): List<BeerDto>
+    suspend fun loadRandomBeer(): Response<List<BeerDto>>
 
     @GET("beers/{id}")
     suspend fun loadBeerDetails(@Path("id") id: Int): Response<List<BeerDto>>
