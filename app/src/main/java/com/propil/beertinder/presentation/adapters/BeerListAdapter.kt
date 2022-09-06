@@ -2,6 +2,7 @@ package com.propil.beertinder.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -10,7 +11,7 @@ import com.propil.beertinder.databinding.BeerRecyclerItemBinding
 import com.propil.beertinder.domain.model.Beer
 
 class BeerListAdapter :
-    ListAdapter<Beer, BeerListAdapter.BeerListViewHolder>(BeerListDiffCallback()) {
+    PagingDataAdapter<Beer, BeerListAdapter.BeerListViewHolder>(BeerListDiffCallback()) {
 
     var onBeerClick: ((Beer) -> Unit)? = null
 
@@ -20,7 +21,7 @@ class BeerListAdapter :
 
         init {
             binding.root.setOnClickListener {
-                onBeerClick?.invoke(getItem(adapterPosition))
+                getItem(absoluteAdapterPosition)?.let { it1 -> onBeerClick?.invoke(it1) }
             }
         }
     }
@@ -36,11 +37,12 @@ class BeerListAdapter :
     override fun onBindViewHolder(holder: BeerListViewHolder, position: Int) {
         with(holder) {
             with(getItem(position)) {
-                binding.beerName.text = this.name
-                binding.beerAbv.text = "${this.abv}"
-                binding.beerTagline.text = this.tagline
-                binding.beerImage.load(this.imageUrl)
+                binding.beerName.text = this?.name
+                binding.beerAbv.text = "${this?.abv}"
+                binding.beerTagline.text = this?.tagline
+                binding.beerImage.load(this?.imageUrl)
             }
         }
     }
+
 }

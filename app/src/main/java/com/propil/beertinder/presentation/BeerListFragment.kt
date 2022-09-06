@@ -7,9 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.propil.beertinder.R
 import com.propil.beertinder.databinding.BeerListFragmentBinding
 import com.propil.beertinder.presentation.adapters.BeerListAdapter
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 class BeerListFragment : Fragment() {
 
@@ -32,10 +36,19 @@ class BeerListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[BeerListViewModel::class.java]
-        viewModel.beerList.observe(viewLifecycleOwner) {
-            beerListAdapter.submitList(it)
-        }
+//        viewModel.beerList.observe(viewLifecycleOwner) {
+//            beerListAdapter.submitList(it)
+//        }
         setupRecyclerView()
+        fetchBeers()
+    }
+
+    private fun fetchBeers() {
+        lifecycleScope.launch {
+            viewModel.load()
+                .distinctUntilChanged()
+                .collectLatest { beerListAdapter.submitData(it) }
+        }
     }
 
     private fun setupRecyclerView() {
