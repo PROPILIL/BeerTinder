@@ -3,11 +3,17 @@ package com.propil.beertinder.data.repository
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.propil.beertinder.data.PunkApiPagingSource
 import com.propil.beertinder.data.database.BeerDatabase
 import com.propil.beertinder.data.mapper.BeerMapper
+import com.propil.beertinder.data.remote.model.BeerDto
 import com.propil.beertinder.data.remote.network.PunkApiFactory
 import com.propil.beertinder.domain.logic.BeerRepository
 import com.propil.beertinder.domain.model.Beer
+import kotlinx.coroutines.flow.Flow
 
 class BeerRepositoryImpl(application: Application) : BeerRepository {
 
@@ -50,6 +56,20 @@ class BeerRepositoryImpl(application: Application) : BeerRepository {
     override suspend fun loadBeerDetails(beerId: Int): Beer {
         val response = punkApiService.loadBeerDetails(beerId)
         return mapper.mapResponseToEntity(response)
+    }
+
+    fun loadData(): Flow<PagingData<BeerDto>> {
+        return Pager (
+            config = PagingConfig(
+                pageSize = NETWORK_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { PunkApiPagingSource(punkApiService)}
+        ).flow
+    }
+
+    companion object {
+        const val NETWORK_PAGE_SIZE = 30
     }
 }
 
