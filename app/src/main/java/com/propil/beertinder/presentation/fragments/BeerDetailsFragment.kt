@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import coil.load
+import coil.result
+import com.propil.beertinder.R
 import com.propil.beertinder.databinding.BeerDetailFragmentBinding
 import com.propil.beertinder.databinding.BeerListFragmentBinding
 import com.propil.beertinder.domain.model.Beer
@@ -24,7 +26,8 @@ class BeerDetailsFragment : Fragment() {
     private val binding: BeerDetailFragmentBinding
         get() = _binding ?: throw RuntimeException("BeerDetailBinding = null")
 
-    private var beerId = 1
+    private var beerId = 0
+    private var dataSource = UNKNOWN_DATA_SOURCE
 
 
     override fun onCreateView(
@@ -40,19 +43,48 @@ class BeerDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewmodel = ViewModelProvider(this)[BeerDetailViewModel::class.java]
         parseArgs()
-        launchDetails()
+        launchRightMode()
         addToFavorite()
 
     }
 
-    private fun launchDetails() {
+    private fun launchRightMode(){
+        when(dataSource) {
+            BEER_LIST_FRAGMENT -> launchRemoteDetails()
+            BEER_FAVORITE_FRAGMENT -> launchLocalDetails()
+        }
+    }
+
+    private fun launchRemoteDetails() {
         lifecycleScope.launch(Dispatchers.IO) {
             viewmodel.loadBeer(beerId)
             CoroutineScope(Dispatchers.Main).launch {
                 viewmodel.beer.observe(viewLifecycleOwner) {
                     binding.beerName.text = it.name
                     binding.beerAbv.text = it.abv.toString()
-                    binding.beerImage.load(it.imageUrl)
+                    binding.beerImage.load(it.imageUrl) {
+                        crossfade(true)
+                        placeholder(R.drawable.beer_mug)
+                    }
+                    binding.beerTagline.text = it.tagline
+                    binding.beerDescription.text = it.description
+                    binding.beerFoodPairing.text = it.foodPairing?.joinToString(",", postfix = ",")
+                }
+            }
+        }
+    }
+
+    private fun launchLocalDetails(){
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewmodel.getBeer(beerId)
+            CoroutineScope(Dispatchers.Main).launch {
+                viewmodel.favoriteBeer.observe(viewLifecycleOwner) {
+                    binding.beerName.text = it.name
+                    binding.beerAbv.text = it.abv.toString()
+                    binding.beerImage.load(it.imageUrl) {
+                        crossfade(true)
+                        placeholder(R.drawable.beer_mug)
+                    }
                     binding.beerTagline.text = it.tagline
                     binding.beerDescription.text = it.description
                     binding.beerFoodPairing.text = it.foodPairing?.joinToString(",", postfix = ",")
@@ -69,9 +101,18 @@ class BeerDetailsFragment : Fragment() {
 
     private fun parseArgs() {
         val args = requireArguments()
-        if (!args.containsKey(BEER_ID)) {
-            throw RuntimeException("Argument beer_id is absent!")
-        } else {
+        if (!args.containsKey(DATA_SOURCE)) {
+            throw RuntimeException("Argument DATA_SOURCE is absent!")
+        }
+        val source = args.getString(DATA_SOURCE)
+        if(source != BEER_LIST_FRAGMENT && source != BEER_FAVORITE_FRAGMENT) {
+            throw RuntimeException("Unknown DATA_SOURCE $dataSource")
+        }
+        dataSource = source
+        if(dataSource == BEER_LIST_FRAGMENT || dataSource == BEER_FAVORITE_FRAGMENT) {
+            if(!args.containsKey(BEER_ID)) {
+                throw RuntimeException("Argument BEER_ID is absent!")
+            }
             beerId = args.getInt(BEER_ID)
         }
     }
@@ -83,10 +124,24 @@ class BeerDetailsFragment : Fragment() {
 
     companion object {
         private const val BEER_ID = "BEER_ID"
+        private const val DATA_SOURCE = "DATA_SOURCE"
+        private const val BEER_LIST_FRAGMENT = "BEER_LIST_FRAGMENT"
+        private const val BEER_FAVORITE_FRAGMENT = "BEER_FAVORITE_FRAGMENT"
+        private const val UNKNOWN_DATA_SOURCE = ""
 
-        fun newDetailInstance(beerId: Int): BeerDetailsFragment {
+        fun newDetailRemoteInstance(beerId: Int): BeerDetailsFragment {
             return BeerDetailsFragment().apply {
                 arguments = Bundle().apply {
+                    putString(DATA_SOURCE, BEER_LIST_FRAGMENT)
+                    putInt(BEER_ID, beerId)
+                }
+            }
+        }
+
+        fun newDetailLocalInstance(beerId: Int): BeerDetailsFragment {
+            return BeerDetailsFragment().apply {
+                arguments = Bundle().apply {
+                    putString(DATA_SOURCE, BEER_FAVORITE_FRAGMENT)
                     putInt(BEER_ID, beerId)
                 }
             }

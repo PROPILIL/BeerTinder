@@ -8,11 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import com.propil.beertinder.R
 import com.propil.beertinder.databinding.BeerListFragmentBinding
 import com.propil.beertinder.presentation.adapters.BeerListAdapter
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
+import com.propil.beertinder.presentation.adapters.BeerLoadStateAdapter
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class BeerListFragment : Fragment() {
@@ -22,7 +23,7 @@ class BeerListFragment : Fragment() {
 
     private var _binding: BeerListFragmentBinding? = null
     private val binding: BeerListFragmentBinding
-        get() = _binding?: throw RuntimeException("BeerListFragment = null")
+        get() = _binding ?: throw RuntimeException("BeerListFragment = null")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,22 +41,51 @@ class BeerListFragment : Fragment() {
 //            beerListAdapter.submitList(it)
 //        }
         setupRecyclerView()
-        fetchBeers()
+//        fetchBeers()
     }
 
-    private fun fetchBeers() {
-        lifecycleScope.launch {
-            viewModel.load()
-                .distinctUntilChanged()
-                .collectLatest { beerListAdapter.submitData(it) }
-        }
-    }
+//    private fun fetchBeers() {
+//        lifecycleScope.launch {
+//            viewModel.loadBeerList()
+//                .distinctUntilChanged()
+//                .collectLatest { beerListAdapter.submitData(it) }
+//        }
+//    }
 
     private fun setupRecyclerView() {
-        val recyclerView = binding.beerListRecycler
-        with(recyclerView) {
-            beerListAdapter = BeerListAdapter()
-            adapter = beerListAdapter
+        beerListAdapter = BeerListAdapter()
+        with(binding) {
+            with(beerListAdapter) {
+                swipeRefresh.setOnRefreshListener { this.refresh() }
+                beerListRecycler.adapter = withLoadStateHeaderAndFooter(
+                    header = BeerLoadStateAdapter(this),
+                    footer = BeerLoadStateAdapter(this)
+                )
+            }
+            launchOnLifecycleScope {
+                viewModel.loadBeerList()
+                    .distinctUntilChanged()
+                    .collectLatest {
+                        beerListAdapter.submitData(it)
+                    }
+
+            }
+            launchOnLifecycleScope {
+                with(beerListAdapter) {
+                    loadStateFlow.collectLatest {
+                        swipeRefresh.isRefreshing = it.refresh is LoadState.Loading
+                    }
+                }
+
+            }
+            launchOnLifecycleScope {
+                with(beerListAdapter) {
+                    loadStateFlow.distinctUntilChangedBy { it.refresh }
+                        .filter { it.refresh is LoadState.NotLoading }
+                        .collect { beerListRecycler.scrollToPosition(0) }
+                }
+
+            }
         }
         setupClickListener()
 
@@ -63,7 +93,7 @@ class BeerListFragment : Fragment() {
 
     private fun setupClickListener() {
         beerListAdapter.onBeerClick = {
-            launchDetails(BeerDetailsFragment.newDetailInstance(it.id))
+            launchDetails(BeerDetailsFragment.newDetailRemoteInstance(it.id))
             Log.d("TAG", "${it}")
         }
     }
@@ -74,6 +104,12 @@ class BeerListFragment : Fragment() {
             .addToBackStack(null)
             .commit()
 
+    }
+
+    private fun launchOnLifecycleScope(execute: suspend () -> Unit) {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            execute()
+        }
     }
 
     override fun onDestroyView() {
