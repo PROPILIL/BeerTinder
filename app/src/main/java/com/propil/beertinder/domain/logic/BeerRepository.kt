@@ -1,7 +1,9 @@
 package com.propil.beertinder.domain.logic
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingData
 import com.propil.beertinder.domain.model.Beer
+import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.json.Json
 
 interface BeerRepository {
@@ -17,7 +19,7 @@ interface BeerRepository {
     //for the beerEntity favorite
     suspend fun deleteBeer(beer: Beer)
 
-    suspend fun loadBeerList(page: Int, per_page: Int): List<Beer>
+    suspend fun loadBeerList(): Flow<PagingData<Beer>>
 
     //for beerTinder section
     suspend fun loadRandomBeer(): Beer

@@ -7,6 +7,7 @@ import androidx.lifecycle.Transformations
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
 import com.propil.beertinder.data.PunkApiPagingSource
 import com.propil.beertinder.data.database.BeerDatabase
 import com.propil.beertinder.data.mapper.BeerMapper
@@ -15,15 +16,13 @@ import com.propil.beertinder.data.remote.network.PunkApiFactory
 import com.propil.beertinder.domain.logic.BeerRepository
 import com.propil.beertinder.domain.model.Beer
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class BeerRepositoryImpl(application: Application) : BeerRepository {
 
     private val beerDao = BeerDatabase.getInstance(application).beerDao()
     private val mapper = BeerMapper()
     private val punkApiService = PunkApiFactory.punkApiService
-
-    private val beerListLocal = sortedSetOf<Beer>({ o1, o2 -> o1.id.compareTo(o2.id) })
-    private val beerListLocalLiveData = MutableLiveData<List<Beer>>()
 
     override fun getBeerList(): LiveData<List<Beer>> {
         return Transformations.map(beerDao.getBeerList()) {
@@ -47,9 +46,18 @@ class BeerRepositoryImpl(application: Application) : BeerRepository {
         beerDao.deleteFavoriteBeer(beer.id)
     }
 
-    override suspend fun loadBeerList(page: Int, per_page: Int): List<Beer> {
-        val response = punkApiService.loadBeerList(page, per_page)
-        return mapper.mapResponseListToEntityList(response)
+    override suspend fun loadBeerList(): Flow<PagingData<Beer>> {
+        val response = Pager(
+            config = PagingConfig(
+                pageSize = NETWORK_PAGE_SIZE,
+                enablePlaceholders = true
+            ),
+            pagingSourceFactory = { PunkApiPagingSource(punkApiService) }
+        ).flow
+
+        return response.map { value: PagingData<BeerDto> ->
+            value.map { mapper.mapDtoToEntity(it) }
+        }
     }
 
     override suspend fun loadRandomBeer(): Beer {
@@ -62,15 +70,23 @@ class BeerRepositoryImpl(application: Application) : BeerRepository {
         return mapper.mapResponseToEntity(response)
     }
 
-    fun loadData(): Flow<PagingData<BeerDto>> {
-        return Pager (
-            config = PagingConfig(
-                pageSize = NETWORK_PAGE_SIZE,
-                enablePlaceholders = false
-            ),
-            pagingSourceFactory = { PunkApiPagingSource(punkApiService)}
-        ).flow
-    }
+//    fun loadBeerList(): Flow<PagingData<BeerDto>> {
+//        return Pager(
+//            config = PagingConfig(
+//                pageSize = NETWORK_PAGE_SIZE,
+//                enablePlaceholders = true
+//            ),
+//            pagingSourceFactory = { PunkApiPagingSource(punkApiService) }
+//        ).flow
+//    }
+
+//    val flow = Pager(
+//        config = PagingConfig(
+//            pageSize = NETWORK_PAGE_SIZE,
+//            enablePlaceholders = true
+//        ),
+//        pagingSourceFactory = { PunkApiPagingSource(punkApiService) }
+//    ).flow
 
     companion object {
         const val NETWORK_PAGE_SIZE = 10

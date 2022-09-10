@@ -10,9 +10,12 @@
         <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/app/src/main/res/drawable/ic_baseline_whatshot_24.xml" value="0.3635" />
         <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/app/src/main/res/layout/beer_detail_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/app/src/main/res/layout/beer_item_placeholder.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/app/src/main/res/layout/beer_list_fragment.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/app/src/main/res/layout/beer_recycler_item.xml" value="0.365625" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/app/src/main/res/layout/beer_tinder_card.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/app/src/main/res/layout/beer_tinder_fragment.xml" value="0.22265625" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/app/src/main/res/layout/default_load_state.xml" value="0.264945652173913" />
         <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/app/src/main/res/menu/beer_bottom_navigation_menu.xml" value="0.36666666666666664" />
       </map>
     </option>

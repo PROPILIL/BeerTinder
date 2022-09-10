@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.propil.beertinder.R
 import com.propil.beertinder.databinding.ActivityMainBinding
-import com.propil.beertinder.presentation.fragments.BeerFavoritesFragment
+import com.propil.beertinder.presentation.fragments.BeerFavoriteFragment
 import com.propil.beertinder.presentation.fragments.BeerListFragment
 import com.propil.beertinder.presentation.fragments.BeerListViewModel
 import com.propil.beertinder.presentation.fragments.BeerTinderFragment
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.beer_favorites -> {
-                    launchListFragment(BeerFavoritesFragment.newInstance())
+                    launchListFragment(BeerFavoriteFragment.newInstance())
                     true
                 }
                 R.id.beer_tinder -> {

@@ -1,24 +1,13 @@
 package com.propil.beertinder.data.mapper
 
+import android.app.Application
+import coil.request.ImageRequest
 import com.propil.beertinder.data.database.BeerDbModel
 import com.propil.beertinder.data.remote.model.BeerDto
 import com.propil.beertinder.domain.model.Beer
 import retrofit2.Response
 
 class BeerMapper {
-
-//    //convert dto to dbModel
-//    fun mapDtoToDbModel(beerDto: BeerDto) = beerDto[0].let {
-//        BeerDbModel(
-//            id = it.id,
-//            name = it.name,
-//            tagline = it.tagline,
-//            description = it.description,
-//            imageUrl = it.imageUrl,
-//            abv = it.abv,
-//            foodPairing = it.foodPairing
-//        )
-//    }
 
     fun mapDbModelToEntity(beerDbModel: BeerDbModel) = Beer(
         id = beerDbModel.id,
