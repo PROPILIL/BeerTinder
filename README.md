@@ -1,11 +1,11 @@
-# BeerTinder (specification in progress)
+# BeerTinder (app in progress)
 This is just a study project using the Punk API (https://punkapi.com/)
 
 # --- Specification ---
 
 ### Technologies:
-1. Kotlin (Coroutines, Coil)
-2. Retrofit + Moshi
+1. Kotlin (Coroutines, Coil, Flows)
+2. Retrofit + Kotlin Serialization
 3. Dagger2
 4. RecyclerView
 5. ViewPager2
@@ -48,5 +48,5 @@ This is random beer section. Displays cards with beer (like a tinder, badoo and 
 Displays the beer according to the API.
 
 ***
-## Architicture
-MVVM + Retrofit classes
+## UI architicture
+MVVM
