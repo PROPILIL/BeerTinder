@@ -4,17 +4,17 @@
         android:id="@+id/beer_list"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_view_comfy_24"
-        android:title="All"/>
+        android:title="@string/beer_list_tab"/>
 
     <item
         android:id="@+id/beer_favorites"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_favorite_24"
-        android:title="Favorite"/>
+        android:title="@string/beer_favorite_tab"/>
 
     <item
         android:id="@+id/beer_tinder"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_whatshot_24"
-        android:title="Random"/>
+        android:title="@string/beer_random_tab"/>
 </menu>

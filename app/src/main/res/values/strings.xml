@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">BeerTinder</string>
+
+    <!--    BOTTOM NAV MENU-->
+    <string name="beer_list_tab">All beer</string>
+    <string name="beer_favorite_tab">Favorite</string>
+    <string name="beer_random_tab">Random</string>
+
+    <!--    BEER DETAIL FRAGMENT-->
+    <string name="beer_label_description">Description</string>
+    <string name="beer_label_food_pairing">Food Pairing</string>
+    <string name="beer_tools_description">Our flagship beer that kick started the craft beer revolution. This is James and Martin\'s original take on an American IPA,subverted with punchy New Zealand hops. Layered with new world hops to createan all-out riot of grapefruit, pineapple and lychee before a spiky,mouth-puckering bitter finish.</string>
+    <string name="beer_tools_food_pairing">Spicy carne asada with a pico de gallo sauce, Shredded chicken tacos with a mango chilli lime salsa, Cheesecake with a passion fruit swirl sauce</string>
+
 </resources>

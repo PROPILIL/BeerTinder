@@ -35,7 +35,7 @@ android {
 }
 
 android {
-    viewBinding {
+    dataBinding {
         enabled = true
     }
 }
