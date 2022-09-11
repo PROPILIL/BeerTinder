@@ -1,6 +1,7 @@
 package com.propil.beertinder.presentation.fragments
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +11,10 @@ import com.propil.beertinder.domain.logic.AddBeerToFavoriteUseCase
 import com.propil.beertinder.domain.logic.GetBeerUseCase
 import com.propil.beertinder.domain.logic.LoadBeerDetailsUseCase
 import com.propil.beertinder.domain.model.Beer
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+
+enum class PunkApiStatus { LOADING, SUCCESS, ERROR }
 
 class BeerDetailViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -22,6 +26,10 @@ class BeerDetailViewModel(application: Application) : AndroidViewModel(applicati
     val favoriteBeer: LiveData<Beer>
         get() = _favoriteBeer
 
+    private val _requestStatus = MutableLiveData<PunkApiStatus>()
+    val requestStatus: LiveData<PunkApiStatus>
+        get() = _requestStatus
+
     private val repository = BeerRepositoryImpl(application)
 
     private val loadBeerDetailsUseCase = LoadBeerDetailsUseCase(repository)
@@ -29,8 +37,17 @@ class BeerDetailViewModel(application: Application) : AndroidViewModel(applicati
     private val getBeerUseCase = GetBeerUseCase(repository)
 
     suspend fun loadBeer(beerId: Int) {
-        val item = loadBeerDetailsUseCase.invoke(beerId)
-        _beer.postValue(item)
+        viewModelScope.launch {
+            _requestStatus.postValue(PunkApiStatus.LOADING)
+            try {
+                _beer.postValue(loadBeerDetailsUseCase.invoke(beerId))
+                _requestStatus.postValue(PunkApiStatus.SUCCESS)
+
+            } catch (e: Exception) {
+                _requestStatus.postValue(PunkApiStatus.ERROR)
+            }
+
+        }
     }
 
     fun getBeer(beerId: Int) {
@@ -38,7 +55,7 @@ class BeerDetailViewModel(application: Application) : AndroidViewModel(applicati
             val item = getBeerUseCase.invoke(beerId)
             _favoriteBeer.postValue(item)
         }
-            }
+    }
 
     fun addToFavorite() {
         viewModelScope.launch {

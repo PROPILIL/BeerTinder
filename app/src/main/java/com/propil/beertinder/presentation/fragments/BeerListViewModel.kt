@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.map
 class BeerListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = BeerRepositoryImpl(application)
-    private val mapper = BeerMapper()
 
     suspend fun loadBeerList(): Flow<PagingData<Beer>> {
         return repository.loadBeerList().cachedIn(viewModelScope)
