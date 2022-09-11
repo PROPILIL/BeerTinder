@@ -70,24 +70,6 @@ class BeerRepositoryImpl(application: Application) : BeerRepository {
         return mapper.mapResponseToEntity(response)
     }
 
-//    fun loadBeerList(): Flow<PagingData<BeerDto>> {
-//        return Pager(
-//            config = PagingConfig(
-//                pageSize = NETWORK_PAGE_SIZE,
-//                enablePlaceholders = true
-//            ),
-//            pagingSourceFactory = { PunkApiPagingSource(punkApiService) }
-//        ).flow
-//    }
-
-//    val flow = Pager(
-//        config = PagingConfig(
-//            pageSize = NETWORK_PAGE_SIZE,
-//            enablePlaceholders = true
-//        ),
-//        pagingSourceFactory = { PunkApiPagingSource(punkApiService) }
-//    ).flow
-
     companion object {
         const val NETWORK_PAGE_SIZE = 10
     }

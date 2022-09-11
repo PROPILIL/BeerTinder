@@ -1,18 +1,17 @@
 package com.propil.beertinder.presentation.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import coil.load
-import coil.result
 import com.propil.beertinder.R
 import com.propil.beertinder.databinding.BeerDetailFragmentBinding
-import com.propil.beertinder.databinding.BeerListFragmentBinding
-import com.propil.beertinder.domain.model.Beer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,8 +47,8 @@ class BeerDetailsFragment : Fragment() {
 
     }
 
-    private fun launchRightMode(){
-        when(dataSource) {
+    private fun launchRightMode() {
+        when (dataSource) {
             BEER_LIST_FRAGMENT -> launchRemoteDetails()
             BEER_FAVORITE_FRAGMENT -> launchLocalDetails()
         }
@@ -68,13 +67,36 @@ class BeerDetailsFragment : Fragment() {
                     }
                     binding.beerTagline.text = it.tagline
                     binding.beerDescription.text = it.description
-                    binding.beerFoodPairing.text = it.foodPairing?.joinToString(",", postfix = ",")
+                    binding.beerFoodPairing.text =
+                        it.foodPairing?.joinToString(",", postfix = ",")
                 }
             }
         }
     }
 
-    private fun launchLocalDetails(){
+    private fun handleNetworkStatus() {
+        viewmodel.requestStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                PunkApiStatus.LOADING -> {
+                    binding.progressBar.isVisible = true
+                    binding.beerName.visibility = View.GONE
+                    launchRemoteDetails()
+                }
+                PunkApiStatus.SUCCESS -> {
+                    binding.progressBar.isVisible = false
+                    binding.beerName.visibility = View.VISIBLE
+
+                }
+                PunkApiStatus.ERROR -> {
+                    binding.progressBar.isVisible = false
+                    binding.beerName.visibility = View.GONE
+                    binding.statusCode.text = "SOMETHING WENT WRONG"
+                }
+            }
+        }
+    }
+
+    private fun launchLocalDetails() {
         lifecycleScope.launch(Dispatchers.IO) {
             viewmodel.getBeer(beerId)
             CoroutineScope(Dispatchers.Main).launch {
@@ -105,12 +127,12 @@ class BeerDetailsFragment : Fragment() {
             throw RuntimeException("Argument DATA_SOURCE is absent!")
         }
         val source = args.getString(DATA_SOURCE)
-        if(source != BEER_LIST_FRAGMENT && source != BEER_FAVORITE_FRAGMENT) {
+        if (source != BEER_LIST_FRAGMENT && source != BEER_FAVORITE_FRAGMENT) {
             throw RuntimeException("Unknown DATA_SOURCE $dataSource")
         }
         dataSource = source
-        if(dataSource == BEER_LIST_FRAGMENT || dataSource == BEER_FAVORITE_FRAGMENT) {
-            if(!args.containsKey(BEER_ID)) {
+        if (dataSource == BEER_LIST_FRAGMENT || dataSource == BEER_FAVORITE_FRAGMENT) {
+            if (!args.containsKey(BEER_ID)) {
                 throw RuntimeException("Argument BEER_ID is absent!")
             }
             beerId = args.getInt(BEER_ID)
