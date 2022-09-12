@@ -18,6 +18,7 @@ enum class PunkApiStatus { LOADING, SUCCESS, ERROR }
 
 class BeerDetailViewModel(application: Application) : AndroidViewModel(application) {
 
+    //FIXME: Do it in abstract class next time (this code breaks DRY and Encapsulation principles)
     private val _beer = MutableLiveData<Beer>()
     val beer: LiveData<Beer>
         get() = _beer

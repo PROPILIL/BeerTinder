@@ -2,15 +2,13 @@ package com.propil.beertinder.presentation.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import coil.load
-import com.propil.beertinder.R
 import com.propil.beertinder.databinding.BeerTinderFragmentBinding
+import com.propil.beertinder.presentation.utils.ImageLoader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,10 +45,7 @@ class BeerTinderFragment : Fragment() {
                 viewmodel.randomBeer.observe(viewLifecycleOwner) {
                     binding.beerName.text = it.name
                     binding.beerAbv.text = it.abv.toString()
-                    binding.beerImage.load(it.imageUrl) {
-                        crossfade(true)
-                        placeholder(R.drawable.beer_mug)
-                    }
+                    ImageLoader.loadImageWithCoil(binding.beerImage, it.imageUrl)
                     binding.beerTagline.text = it.tagline
                 }
             }

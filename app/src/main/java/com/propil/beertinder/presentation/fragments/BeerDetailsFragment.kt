@@ -1,7 +1,6 @@
 package com.propil.beertinder.presentation.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.propil.beertinder.R
 import com.propil.beertinder.databinding.BeerDetailFragmentBinding
+import com.propil.beertinder.presentation.utils.ImageLoader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,10 +61,7 @@ class BeerDetailsFragment : Fragment() {
                 viewmodel.beer.observe(viewLifecycleOwner) {
                     binding.beerName.text = it.name
                     binding.beerAbv.text = it.abv.toString()
-                    binding.beerImage.load(it.imageUrl) {
-                        crossfade(true)
-                        placeholder(R.drawable.beer_mug)
-                    }
+                    ImageLoader.loadImageWithCoil(binding.beerImage, it.imageUrl)
                     binding.beerTagline.text = it.tagline
                     binding.beerDescription.text = it.description
                     binding.beerFoodPairing.text =
@@ -74,6 +71,9 @@ class BeerDetailsFragment : Fragment() {
         }
     }
 
+
+
+    //FIXME: This function doesn't update network status
     private fun handleNetworkStatus() {
         viewmodel.requestStatus.observe(viewLifecycleOwner) {
             when (it) {
