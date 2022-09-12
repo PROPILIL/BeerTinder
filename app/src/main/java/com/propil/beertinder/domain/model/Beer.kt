@@ -8,4 +8,5 @@ data class Beer (
     val imageUrl: String?,
     val abv: Double?,
     val foodPairing: List<String>?,
+    val favorite: Boolean = false
         )

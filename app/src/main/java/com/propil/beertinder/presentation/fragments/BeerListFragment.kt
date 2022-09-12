@@ -1,7 +1,6 @@
 package com.propil.beertinder.presentation.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import com.propil.beertinder.databinding.BeerListFragmentBinding
 import com.propil.beertinder.presentation.adapters.BeerListAdapter
 import com.propil.beertinder.presentation.adapters.BeerLoadStateAdapter
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 class BeerListFragment : Fragment() {
 
@@ -94,7 +92,13 @@ class BeerListFragment : Fragment() {
     private fun setupClickListener() {
         beerListAdapter.onBeerClick = {
             launchDetails(BeerDetailsFragment.newDetailRemoteInstance(it.id))
-            Log.d("TAG", "${it}")
+        }
+    }
+
+    private fun addToFavorite(){
+        beerListAdapter.onBeerLongClick {
+
+
         }
     }
 

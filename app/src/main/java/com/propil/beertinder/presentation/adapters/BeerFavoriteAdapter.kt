@@ -2,14 +2,11 @@ package com.propil.beertinder.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import com.propil.beertinder.R
-import com.propil.beertinder.databinding.BeerListFragmentBinding
 import com.propil.beertinder.databinding.BeerRecyclerItemBinding
 import com.propil.beertinder.domain.model.Beer
+import com.propil.beertinder.presentation.utils.ImageLoader
 
 class BeerFavoriteAdapter :
     ListAdapter<Beer, BeerFavoriteAdapter.BeerFavoriteViewHolder>(BeerListDiffCallback()) {
@@ -41,10 +38,7 @@ class BeerFavoriteAdapter :
                 binding.beerName.text = this?.name
                 binding.beerAbv.text = "${this?.abv}"
                 binding.beerTagline.text = this?.tagline
-                binding.beerImage.load(this?.imageUrl) {
-                    crossfade(true)
-                    placeholder(R.drawable.beer_mug)
-                }
+                ImageLoader.loadImageWithCoil(binding.beerImage, this.imageUrl)
             }
         }
     }
