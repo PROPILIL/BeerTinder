@@ -1,11 +1,16 @@
 package com.propil.beertinder.di
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.propil.beertinder.data.remote.model.BeerDto
 import com.propil.beertinder.data.remote.network.PunkApiPagingSource
 import com.propil.beertinder.data.remote.network.PunkApiService
 import com.propil.beertinder.data.remote.network.RemoteDataSource
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
@@ -36,9 +41,4 @@ class RemoteDataModule {
         return retrofit.create(PunkApiService::class.java)
     }
 
-    @ApplicationScope
-    @Provides
-    fun provideRemoteDataSource(punkApiService: PunkApiService, punkApiPagingSource: PunkApiPagingSource): RemoteDataSource {
-        return RemoteDataSource(punkApiService, punkApiPagingSource)
-    }
 }

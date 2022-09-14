@@ -14,6 +14,7 @@ import retrofit2.Retrofit
 @Module
 interface DataModule {
 
+    @ApplicationScope
     @Binds
     fun bindsRepository(impl: BeerRepositoryImpl) : BeerRepository
 
