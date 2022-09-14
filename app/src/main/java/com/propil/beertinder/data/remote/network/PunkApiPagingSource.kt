@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 private const val PUNK_API_STARTING_PAGE_INDEX = 1
 
-class PunkApiPagingSource(
+class PunkApiPagingSource @Inject constructor(
     private val service: PunkApiService,
 ) : PagingSource<Int, BeerDto>() {
 
