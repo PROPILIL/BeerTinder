@@ -6,8 +6,9 @@ import com.propil.beertinder.data.database.BeerDbModel
 import com.propil.beertinder.data.remote.model.BeerDto
 import com.propil.beertinder.domain.model.Beer
 import retrofit2.Response
+import javax.inject.Inject
 
-class BeerMapper {
+class BeerMapper @Inject constructor() {
 
     fun mapDbModelToEntity(beerDbModel: BeerDbModel) = Beer(
         id = beerDbModel.id,

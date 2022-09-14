@@ -15,10 +15,16 @@ import com.propil.beertinder.presentation.utils.ImageLoader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class BeerDetailsFragment : Fragment() {
 
-    private lateinit var viewmodel: BeerDetailViewModel
+    @Inject
+    private lateinit var viewModelFactory: ViewModelFactory
+
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[BeerDetailViewModel::class.java]
+    }
 
 
     private var _binding: BeerDetailFragmentBinding? = null
@@ -40,7 +46,7 @@ class BeerDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewmodel = ViewModelProvider(this)[BeerDetailViewModel::class.java]
+//        viewmodel = ViewModelProvider(this)[BeerDetailViewModel::class.java]
         parseArgs()
         launchRightMode()
         addToFavorite()
@@ -56,9 +62,9 @@ class BeerDetailsFragment : Fragment() {
 
     private fun launchRemoteDetails() {
         lifecycleScope.launch(Dispatchers.IO) {
-            viewmodel.loadBeer(beerId)
+            viewModel.loadBeer(beerId)
             CoroutineScope(Dispatchers.Main).launch {
-                viewmodel.beer.observe(viewLifecycleOwner) {
+                viewModel.beer.observe(viewLifecycleOwner) {
                     binding.beerName.text = it.name
                     binding.beerAbv.text = it.abv.toString()
                     ImageLoader.loadImageWithCoil(binding.beerImage, it.imageUrl)
@@ -75,7 +81,7 @@ class BeerDetailsFragment : Fragment() {
 
     //FIXME: This function doesn't update network status
     private fun handleNetworkStatus() {
-        viewmodel.requestStatus.observe(viewLifecycleOwner) {
+        viewModel.requestStatus.observe(viewLifecycleOwner) {
             when (it) {
                 PunkApiStatus.LOADING -> {
                     binding.progressBar.isVisible = true
@@ -98,9 +104,9 @@ class BeerDetailsFragment : Fragment() {
 
     private fun launchLocalDetails() {
         lifecycleScope.launch(Dispatchers.IO) {
-            viewmodel.getBeer(beerId)
+            viewModel.getBeer(beerId)
             CoroutineScope(Dispatchers.Main).launch {
-                viewmodel.favoriteBeer.observe(viewLifecycleOwner) {
+                viewModel.favoriteBeer.observe(viewLifecycleOwner) {
                     binding.beerName.text = it.name
                     binding.beerAbv.text = it.abv.toString()
                     binding.beerImage.load(it.imageUrl) {
@@ -117,7 +123,7 @@ class BeerDetailsFragment : Fragment() {
 
     private fun addToFavorite() {
         binding.toFavoriteButton.setOnClickListener {
-            viewmodel.addToFavorite()
+            viewModel.addToFavorite()
         }
     }
 
