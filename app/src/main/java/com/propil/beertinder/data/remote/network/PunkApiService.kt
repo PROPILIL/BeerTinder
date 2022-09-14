@@ -1,11 +1,13 @@
 package com.propil.beertinder.data.remote.network
 
 import com.propil.beertinder.data.remote.model.BeerDto
+import com.propil.beertinder.di.ApplicationScope
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+@ApplicationScope
 interface PunkApiService {
 
     @GET("beers?")

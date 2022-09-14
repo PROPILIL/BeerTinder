@@ -3,7 +3,6 @@ package com.propil.beertinder.di
 import android.app.Application
 import com.propil.beertinder.data.database.BeerDao
 import com.propil.beertinder.data.database.BeerDatabase
-import com.propil.beertinder.data.remote.network.PunkApiFactory
 import com.propil.beertinder.data.remote.network.PunkApiService
 import com.propil.beertinder.data.repository.BeerRepositoryImpl
 import com.propil.beertinder.domain.logic.BeerRepository
@@ -11,7 +10,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
-import retrofit2.create
 
 @Module
 interface DataModule {
@@ -27,11 +25,6 @@ interface DataModule {
             application: Application
         ): BeerDao {
             return BeerDatabase.getInstance(application).beerDao()
-        }
-
-        @Provides
-        fun providePunkApiService(retrofit: Retrofit): PunkApiService {
-            return retrofit.create(PunkApiService::class.java)
         }
     }
 }
