@@ -8,7 +8,11 @@ import com.propil.beertinder.presentation.fragments.BeerTinderFragment
 import dagger.BindsInstance
 import dagger.Component
 
-@Component(modules = [DataModule::class, ViewModelModule::class])
+@ApplicationScope
+@Component(
+    modules =
+    [DataModule::class, ViewModelModule::class, RemoteDataModule::class]
+)
 interface ApplicationComponent {
 
     fun inject(beerListFragment: BeerListFragment)
@@ -24,6 +28,6 @@ interface ApplicationComponent {
 
         fun create(
             @BindsInstance application: Application
-        ) : ApplicationComponent
+        ): ApplicationComponent
     }
 }

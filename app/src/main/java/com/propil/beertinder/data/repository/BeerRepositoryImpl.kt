@@ -1,21 +1,19 @@
 package com.propil.beertinder.data.repository
 
-import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.propil.beertinder.data.database.BeerDao
-import com.propil.beertinder.data.database.BeerDatabase
 import com.propil.beertinder.data.mapper.BeerMapper
 import com.propil.beertinder.data.remote.model.BeerDto
 import com.propil.beertinder.data.remote.network.PunkApiFactory
 import com.propil.beertinder.data.remote.network.PunkApiPagingSource
 import com.propil.beertinder.data.remote.network.PunkApiService
 import com.propil.beertinder.data.remote.network.RemoteDataSource
+import com.propil.beertinder.di.ApplicationScope
 import com.propil.beertinder.domain.logic.BeerRepository
 import com.propil.beertinder.domain.model.Beer
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +22,7 @@ import javax.inject.Inject
 
 class BeerRepositoryImpl @Inject constructor(
     private val mapper: BeerMapper,
-    private val punkApiService: PunkApiService,
+    private val remoteDataSource: RemoteDataSource,
     private val beerDao: BeerDao
 ) : BeerRepository {
 
@@ -68,12 +66,12 @@ class BeerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun loadRandomBeer(): Beer {
-        val response = punkApiService.loadRandomBeer()
+        val response = remoteDataSource.loadRandomBeer()
         return mapper.mapResponseToEntity(response)
     }
 
     override suspend fun loadBeerDetails(beerId: Int): Beer {
-        val response = punkApiService.loadBeerDetails(beerId)
+        val response = remoteDataSource.loadBeerDetails(beerId)
         return mapper.mapResponseToEntity(response)
     }
 
