@@ -1,6 +1,7 @@
 package com.propil.beertinder.data.database
 
 import androidx.room.TypeConverter
+import javax.inject.Inject
 
 class BeerConverter {
 
