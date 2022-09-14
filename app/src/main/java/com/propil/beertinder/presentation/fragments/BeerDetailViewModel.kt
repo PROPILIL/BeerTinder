@@ -2,10 +2,7 @@ package com.propil.beertinder.presentation.fragments
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.propil.beertinder.data.repository.BeerRepositoryImpl
 import com.propil.beertinder.domain.logic.AddBeerToFavoriteUseCase
 import com.propil.beertinder.domain.logic.GetBeerUseCase
@@ -13,10 +10,17 @@ import com.propil.beertinder.domain.logic.LoadBeerDetailsUseCase
 import com.propil.beertinder.domain.model.Beer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 enum class PunkApiStatus { LOADING, SUCCESS, ERROR }
 
-class BeerDetailViewModel(application: Application) : AndroidViewModel(application) {
+class BeerDetailViewModel @Inject constructor(
+    private val repository: BeerRepositoryImpl,
+    private val loadBeerDetailsUseCase: LoadBeerDetailsUseCase,
+    private val getBeerUseCase: GetBeerUseCase,
+    private val addBeerToFavoriteUseCase: AddBeerToFavoriteUseCase
+
+) : ViewModel() {
 
     //FIXME: Do it in abstract class next time (this code breaks DRY and Encapsulation principles)
     private val _beer = MutableLiveData<Beer>()
@@ -31,11 +35,6 @@ class BeerDetailViewModel(application: Application) : AndroidViewModel(applicati
     val requestStatus: LiveData<PunkApiStatus>
         get() = _requestStatus
 
-    private val repository = BeerRepositoryImpl(application)
-
-    private val loadBeerDetailsUseCase = LoadBeerDetailsUseCase(repository)
-    private val addBeerToFavoriteUseCase = AddBeerToFavoriteUseCase(repository)
-    private val getBeerUseCase = GetBeerUseCase(repository)
 
     suspend fun loadBeer(beerId: Int) {
         viewModelScope.launch {

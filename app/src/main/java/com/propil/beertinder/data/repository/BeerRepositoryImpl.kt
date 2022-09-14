@@ -17,12 +17,16 @@ import com.propil.beertinder.domain.logic.BeerRepository
 import com.propil.beertinder.domain.model.Beer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class BeerRepositoryImpl(application: Application) : BeerRepository {
+class BeerRepositoryImpl @Inject constructor(
+    private val mapper: BeerMapper,
+    private val punkApiService:PunkApiFactory
+) : BeerRepository {
 
     private val beerDao = BeerDatabase.getInstance(application).beerDao()
-    private val mapper = BeerMapper()
-    private val punkApiService = PunkApiFactory.punkApiService
+
+
 
     override fun getBeerList(): LiveData<List<Beer>> {
         return Transformations.map(beerDao.getBeerList()) {
