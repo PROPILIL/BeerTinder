@@ -1,6 +1,7 @@
 package com.propil.beertinder.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.propil.beertinder.data.remote.network.PunkApiPagingSource
 import com.propil.beertinder.data.remote.network.PunkApiService
 import com.propil.beertinder.data.remote.network.RemoteDataSource
 import dagger.Module
@@ -37,7 +38,7 @@ class RemoteDataModule {
 
     @ApplicationScope
     @Provides
-    fun provideRemoteDataSource(punkApiService: PunkApiService): RemoteDataSource {
-        return RemoteDataSource(punkApiService)
+    fun provideRemoteDataSource(punkApiService: PunkApiService, punkApiPagingSource: PunkApiPagingSource): RemoteDataSource {
+        return RemoteDataSource(punkApiService, punkApiPagingSource)
     }
 }

@@ -26,9 +26,6 @@ class BeerRepositoryImpl @Inject constructor(
     private val beerDao: BeerDao
 ) : BeerRepository {
 
-//    private val punkApiService = PunkApiFactory.punkApiService
-
-
     override fun getBeerList(): LiveData<List<Beer>> {
         return Transformations.map(beerDao.getBeerList()) {
             it.map {
@@ -52,14 +49,7 @@ class BeerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun loadBeerList(): Flow<PagingData<Beer>> {
-        val response = Pager(
-            config = PagingConfig(
-                pageSize = NETWORK_PAGE_SIZE,
-                enablePlaceholders = true
-            ),
-            pagingSourceFactory = { PunkApiPagingSource(PunkApiFactory.punkApiService) }
-        ).flow
-
+        val response = remoteDataSource.pager
         return response.map { value: PagingData<BeerDto> ->
             value.map { mapper.mapDtoToEntity(it) }
         }

@@ -8,8 +8,18 @@ import com.propil.beertinder.di.ApplicationScope
 import javax.inject.Inject
 @ApplicationScope
 class RemoteDataSource @Inject constructor(
-    private val punkApiService: PunkApiService
+    private val punkApiService: PunkApiService,
+    private val punkApiPagingSource: PunkApiPagingSource
 ) {
+
+    val pager = Pager(
+    config = PagingConfig(
+    pageSize = NETWORK_PAGE_SIZE,
+    enablePlaceholders = true
+    ),
+    pagingSourceFactory = { punkApiPagingSource }
+    ).flow
+
 
     suspend fun loadRandomBeer() = punkApiService.loadRandomBeer()
 
