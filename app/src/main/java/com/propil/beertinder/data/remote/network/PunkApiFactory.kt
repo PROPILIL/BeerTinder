@@ -7,24 +7,25 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.create
+import javax.inject.Inject
 
 object PunkApiFactory {
 
     private const val BASE_URL = "https://api.punkapi.com/v2/"
     private val contentType = "application/json".toMediaType()
 
-    private fun createOkHttpClient(): OkHttpClient {
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-
-        return OkHttpClient.Builder()
-            .addInterceptor(httpLoggingInterceptor)
-            .build()
-    }
+//    private fun createOkHttpClient(): OkHttpClient {
+//        val httpLoggingInterceptor = HttpLoggingInterceptor()
+//        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+//
+//        return OkHttpClient.Builder()
+//            .addInterceptor(httpLoggingInterceptor)
+//            .build()
+//    }
 
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(Json.asConverterFactory(contentType))
-        .client(createOkHttpClient())
+//        .client(createOkHttpClient())
         .baseUrl(BASE_URL)
         .build()
 

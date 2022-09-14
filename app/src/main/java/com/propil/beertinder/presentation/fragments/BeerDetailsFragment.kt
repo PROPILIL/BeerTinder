@@ -1,5 +1,6 @@
 package com.propil.beertinder.presentation.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.propil.beertinder.R
 import com.propil.beertinder.databinding.BeerDetailFragmentBinding
+import com.propil.beertinder.presentation.BeerTinderApplication
 import com.propil.beertinder.presentation.utils.ImageLoader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,8 +21,14 @@ import javax.inject.Inject
 
 class BeerDetailsFragment : Fragment() {
 
+
+
     @Inject
-    private lateinit var viewModelFactory: ViewModelFactory
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (requireActivity().application as BeerTinderApplication).component
+    }
 
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[BeerDetailViewModel::class.java]
@@ -34,6 +42,11 @@ class BeerDetailsFragment : Fragment() {
     private var beerId = 0
     private var dataSource = UNKNOWN_DATA_SOURCE
 
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +59,6 @@ class BeerDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewmodel = ViewModelProvider(this)[BeerDetailViewModel::class.java]
         parseArgs()
         launchRightMode()
         addToFavorite()
@@ -76,8 +88,6 @@ class BeerDetailsFragment : Fragment() {
             }
         }
     }
-
-
 
     //FIXME: This function doesn't update network status
     private fun handleNetworkStatus() {

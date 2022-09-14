@@ -15,7 +15,6 @@ import javax.inject.Inject
 enum class PunkApiStatus { LOADING, SUCCESS, ERROR }
 
 class BeerDetailViewModel @Inject constructor(
-    private val repository: BeerRepositoryImpl,
     private val loadBeerDetailsUseCase: LoadBeerDetailsUseCase,
     private val getBeerUseCase: GetBeerUseCase,
     private val addBeerToFavoriteUseCase: AddBeerToFavoriteUseCase

@@ -1,5 +1,6 @@
 package com.propil.beertinder.presentation.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,18 +11,34 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.propil.beertinder.R
 import com.propil.beertinder.databinding.BeerListFragmentBinding
+import com.propil.beertinder.presentation.BeerTinderApplication
 import com.propil.beertinder.presentation.adapters.BeerListAdapter
 import com.propil.beertinder.presentation.adapters.BeerLoadStateAdapter
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
 class BeerListFragment : Fragment() {
 
-    private lateinit var viewModel: BeerListViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (requireActivity().application as BeerTinderApplication).component
+    }
+
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[BeerListViewModel::class.java]
+    }
     private lateinit var beerListAdapter: BeerListAdapter
 
     private var _binding: BeerListFragmentBinding? = null
     private val binding: BeerListFragmentBinding
         get() = _binding ?: throw RuntimeException("BeerListFragment = null")
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +51,6 @@ class BeerListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[BeerListViewModel::class.java]
 //        viewModel.beerList.observe(viewLifecycleOwner) {
 //            beerListAdapter.submitList(it)
 //        }
@@ -95,12 +111,6 @@ class BeerListFragment : Fragment() {
         }
     }
 
-    private fun addToFavorite(){
-        beerListAdapter.onBeerLongClick {
-
-
-        }
-    }
 
     private fun launchDetails(fragment: Fragment) {
         requireActivity().supportFragmentManager.beginTransaction()
