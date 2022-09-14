@@ -1,5 +1,6 @@
 package com.propil.beertinder.presentation.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,20 +11,36 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.propil.beertinder.R
 import com.propil.beertinder.databinding.BeerListFragmentBinding
+import com.propil.beertinder.presentation.BeerTinderApplication
 import com.propil.beertinder.presentation.adapters.BeerFavoriteAdapter
 import com.propil.beertinder.presentation.adapters.BeerListAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class BeerFavoriteFragment : Fragment() {
 
-    private lateinit var viewModel: BeerFavoritesViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (requireActivity().application as BeerTinderApplication).component
+    }
+
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[BeerFavoritesViewModel::class.java]
+    }
     private lateinit var beerFavoritesAdapter: BeerFavoriteAdapter
 
     private var _binding: BeerListFragmentBinding? = null
     private val binding: BeerListFragmentBinding
         get() = _binding?: throw RuntimeException("BeerListFragment = null")
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +53,6 @@ class BeerFavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[BeerFavoritesViewModel::class.java]
         viewModel.beerFavoriteListLiveData.observe(viewLifecycleOwner) {
             beerFavoritesAdapter.submitList(it)
         }

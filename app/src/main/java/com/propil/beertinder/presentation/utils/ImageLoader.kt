@@ -15,8 +15,6 @@ abstract class ImageLoader {
             }
         }
     }
-
-
    abstract fun loadImage(imageView: ImageView, url: String?)
 
 }
