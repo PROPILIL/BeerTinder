@@ -28,6 +28,24 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:spanCount="2"
                 tools:listitem="@layout/beer_recycler_item" />
+
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+        <Button
+            android:id="@+id/loading_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/red"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="NO INTERNET CONNECTION\nCLICK HERE TO RETRY"
+            android:textColor="@color/white"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
