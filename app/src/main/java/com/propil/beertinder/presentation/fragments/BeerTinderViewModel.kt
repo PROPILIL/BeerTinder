@@ -37,10 +37,10 @@ class BeerTinderViewModel @Inject constructor(
             }
         }
     }
+
+    suspend fun toFavorite(beer: Beer) {
+        viewModelScope.launch(Dispatchers.IO) {
+            addBeerToFavoriteUseCase.invoke(beer)
+        }
+    }
 }
-
-
-//it.data?.let { beerFromData ->
-//    val beer = beerFromData.copy()
-//    addBeerToFavoriteUseCase.invoke(beer)
-//}

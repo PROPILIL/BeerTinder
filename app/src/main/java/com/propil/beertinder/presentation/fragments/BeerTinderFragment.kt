@@ -65,24 +65,10 @@ class BeerTinderFragment : Fragment() {
         noButtonClick()
     }
 
-//    private fun fetchRandomBeer() {
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            viewModel.loadRandomBeer()
-//            CoroutineScope(Dispatchers.Main).launch {
-//                viewModel.randomBeer.observe(viewLifecycleOwner) {
-//                    binding.beerName.text = it.name
-//                    binding.beerAbv.text = it.abv.toString()
-//                    ImageLoader.loadImageWithCoil(binding.beerImage, it.imageUrl)
-//                    binding.beerTagline.text = it.tagline
-//                }
-//            }
-//        }
-//    }
-
     private fun loadRandomBeer() {
         lifecycleScope.launch(Dispatchers.IO) {
             viewModel.randomBeer().collect()
-            viewModel.currentBeer.collectLatest{
+            viewModel.currentBeer.collectLatest {
                 withContext(Dispatchers.Main) {
                     it.let { resource ->
                         when (resource.status) {
@@ -124,16 +110,38 @@ class BeerTinderFragment : Fragment() {
         }
     }
 
+    private fun showToast(message: String) {
+        Toast.makeText(
+            requireActivity().application,
+            message,
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
     private fun yesButtonClick() {
         binding.yesButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                viewModel.addToFavorite()
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        requireActivity().application,
-                        "Added to favorite",
-                        Toast.LENGTH_LONG
-                    ).show()
+                viewModel.currentBeer.collectLatest {
+                    withContext(Dispatchers.Main) {
+                        it.let { resource ->
+                            when (resource.status) {
+                                Status.SUCCESS -> {
+                                    it.data?.let { currentBeer ->
+                                        val beer = currentBeer.copy()
+                                        viewModel.toFavorite(beer)
+                                        showToast("Added to favorite")
+                                    }
+                                }
+                                Status.ERROR -> {
+                                    showToast("Error. Can't add to favorite")
+                                }
+
+                                Status.LOADING -> {
+                                    showToast("Loading. Can't add to favorite")
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
