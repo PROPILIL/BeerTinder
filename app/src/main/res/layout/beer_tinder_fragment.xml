@@ -6,6 +6,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="2dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/tinder_card"
             android:layout_width="match_parent"
@@ -19,6 +30,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.3">
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -43,12 +55,34 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginBottom="2dp"
-                    tools:src="@drawable/beer_sample"
                     app:layout_constraintBottom_toTopOf="@id/text_back"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintVertical_bias="1.0"
+                    tools:src="@drawable/beer_sample" />
+
+                <Button
+                    android:id="@+id/no_button"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="60dp"
+                    android:backgroundTint="@color/red"
+                    android:text="NO"/>
+
+                <Button
+                    android:id="@+id/yes_button"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="60dp"
+                    android:backgroundTint="@color/red"
+                    android:text="YES"/>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/text_back"
@@ -78,5 +112,21 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <Button
+            android:id="@+id/loading_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/red"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="NO INTERNET CONNECTION\nCLICK HERE TO RETRY"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

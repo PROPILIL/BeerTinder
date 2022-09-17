@@ -1,28 +1,46 @@
 package com.propil.beertinder.presentation.fragments
 
-import android.app.Application
 import androidx.lifecycle.*
-import com.propil.beertinder.data.repository.BeerRepositoryImpl
-import com.propil.beertinder.domain.logic.LoadBeerListUseCase
+import com.propil.beertinder.data.remote.utils.Resource
+import com.propil.beertinder.domain.logic.AddBeerToFavoriteUseCase
 import com.propil.beertinder.domain.logic.LoadRandomBeerUseCase
 import com.propil.beertinder.domain.model.Beer
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class BeerTinderViewModel @Inject constructor(
-    private val loadRandomBeerUseCase: LoadRandomBeerUseCase
+    private val loadRandomBeerUseCase: LoadRandomBeerUseCase,
+    private val addBeerToFavoriteUseCase: AddBeerToFavoriteUseCase
 ) : ViewModel() {
 
-    private val _randomBeer = MutableLiveData<Beer>()
-    val randomBeer: LiveData<Beer>
-        get() = _randomBeer
+    private val _currentBeer = MutableStateFlow<Resource<Beer>>(Resource.loading(null))
+    val currentBeer: StateFlow<Resource<Beer>> = _currentBeer.asStateFlow()
 
-
-    suspend fun loadRandomBeer() {
-        viewModelScope.launch {
-            val item = loadRandomBeerUseCase.invoke()
-            _randomBeer.postValue(item)
+    fun randomBeer() = flow<Resource<Beer>> {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _currentBeer.value = (Resource.success(data = loadRandomBeerUseCase.invoke()))
+            } catch (e: Exception) {
+                _currentBeer.value = ((Resource.error(data = null, message = "Something went wrong")))
+            }
         }
+    }
 
+    suspend fun addToFavorite() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _currentBeer.value.data?.let { beerFromData ->
+                val beer = beerFromData.copy()
+                addBeerToFavoriteUseCase.invoke(beer)
+            }
+        }
     }
 }
+
+
+//it.data?.let { beerFromData ->
+//    val beer = beerFromData.copy()
+//    addBeerToFavoriteUseCase.invoke(beer)
+//}

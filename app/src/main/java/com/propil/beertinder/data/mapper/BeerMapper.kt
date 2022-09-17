@@ -44,12 +44,4 @@ class BeerMapper @Inject constructor() {
         return response.body()?.let { mapDtoToEntity(it[0]) }!!
     }
 
-    fun mapResponseListToEntityList(response: Response<List<BeerDto>>): List<Beer> {
-        val beerList = mutableListOf<Beer>()
-        for (item in response.body()!!) {
-            var items = mapDtoToEntity(item)
-            beerList.add(items)
-        }
-        return beerList
-    }
 }

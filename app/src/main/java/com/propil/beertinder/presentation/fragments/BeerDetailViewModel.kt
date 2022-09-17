@@ -1,14 +1,10 @@
 package com.propil.beertinder.presentation.fragments
 
-import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
-import com.propil.beertinder.data.repository.BeerRepositoryImpl
 import com.propil.beertinder.domain.logic.AddBeerToFavoriteUseCase
 import com.propil.beertinder.domain.logic.GetBeerUseCase
 import com.propil.beertinder.domain.logic.LoadBeerDetailsUseCase
 import com.propil.beertinder.domain.model.Beer
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
