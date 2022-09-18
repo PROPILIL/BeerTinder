@@ -2,7 +2,6 @@ package com.propil.beertinder.presentation.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +14,9 @@ import com.propil.beertinder.data.remote.utils.Status
 import com.propil.beertinder.databinding.BeerTinderFragmentBinding
 import com.propil.beertinder.presentation.BeerTinderApplication
 import com.propil.beertinder.presentation.utils.ImageLoader
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -128,7 +125,7 @@ class BeerTinderFragment : Fragment() {
                                 Status.SUCCESS -> {
                                     it.data?.let { currentBeer ->
                                         val beer = currentBeer.copy()
-                                        viewModel.toFavorite(beer)
+                                        viewModel.addToFavorite(beer)
                                         showToast("Added to favorite")
                                     }
                                 }

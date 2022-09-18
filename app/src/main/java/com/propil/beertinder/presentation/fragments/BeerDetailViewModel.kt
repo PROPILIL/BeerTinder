@@ -1,14 +1,16 @@
 package com.propil.beertinder.presentation.fragments
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.propil.beertinder.data.remote.utils.ApiStatus
 import com.propil.beertinder.domain.logic.AddBeerToFavoriteUseCase
 import com.propil.beertinder.domain.logic.GetBeerUseCase
 import com.propil.beertinder.domain.logic.LoadBeerDetailsUseCase
 import com.propil.beertinder.domain.model.Beer
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-enum class PunkApiStatus { LOADING, SUCCESS, ERROR }
 
 class BeerDetailViewModel @Inject constructor(
     private val loadBeerDetailsUseCase: LoadBeerDetailsUseCase,
@@ -17,50 +19,28 @@ class BeerDetailViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    //FIXME: Do it in abstract class next time (this code breaks DRY and Encapsulation principles)
-    private val _beer = MutableLiveData<Beer>()
-    val beer: LiveData<Beer>
-        get() = _beer
+    private val _beerDetailed = MutableStateFlow<ApiStatus<Beer>>(ApiStatus.loading(null))
+    val beerDetailed: StateFlow<ApiStatus<Beer>> = _beerDetailed.asStateFlow()
 
-    private val _favoriteBeer = MutableLiveData<Beer>()
-    val favoriteBeer: LiveData<Beer>
-        get() = _favoriteBeer
-
-    private val _requestStatus = MutableLiveData<PunkApiStatus>()
-    val requestStatus: LiveData<PunkApiStatus>
-        get() = _requestStatus
-
-
-    suspend fun loadBeer(beerId: Int) {
-        viewModelScope.launch {
-            _requestStatus.postValue(PunkApiStatus.LOADING)
+    suspend fun loadBeer(beerId: Int) = flow<ApiStatus<Beer>> {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                _beer.postValue(loadBeerDetailsUseCase.invoke(beerId))
-                _requestStatus.postValue(PunkApiStatus.SUCCESS)
-
+                _beerDetailed.value = ApiStatus
+                    .success(data = loadBeerDetailsUseCase.invoke(beerId))
             } catch (e: Exception) {
-                _requestStatus.postValue(PunkApiStatus.ERROR)
-            }
-
-        }
-    }
-
-    fun getBeer(beerId: Int) {
-        viewModelScope.launch {
-            val item = getBeerUseCase.invoke(beerId)
-            _favoriteBeer.postValue(item)
-        }
-    }
-
-    fun addToFavorite() {
-        viewModelScope.launch {
-            _beer.value?.let {
-                val item = it.copy()
-                addBeerToFavoriteUseCase.invoke(item)
+                _beerDetailed.value = ApiStatus
+                    .error(data = null, message = "Something went wrong")
             }
         }
-
     }
 
+    fun getBeer(beerId: Int): Flow<Beer> = flow {
+        emit(getBeerUseCase.invoke(beerId))
+    }
 
+    fun addToFavorite(beer: Beer) {
+        viewModelScope.launch(Dispatchers.IO) {
+            addBeerToFavoriteUseCase.invoke(beer)
+        }
+    }
 }
