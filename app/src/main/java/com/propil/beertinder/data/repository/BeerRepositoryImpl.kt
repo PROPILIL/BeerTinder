@@ -7,6 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.propil.beertinder.data.database.BeerDao
+import com.propil.beertinder.data.database.BeerDbModel
 import com.propil.beertinder.data.mapper.BeerMapper
 import com.propil.beertinder.data.remote.model.BeerDto
 import com.propil.beertinder.data.remote.network.PunkApiPagingSource
@@ -28,10 +29,11 @@ class BeerRepositoryImpl @Inject constructor(
 ) : BeerRepository {
 
 
-    override fun getBeerList(): LiveData<List<Beer>> {
-        return Transformations.map(beerDao.getBeerList()) {
-            it.map {
-                mapper.mapDbModelToEntity(it)
+    override fun getBeerList(): Flow<List<Beer>> {
+        val response = beerDao.getBeerList()
+        return response.map { list: List<BeerDbModel> ->
+            list.map { item: BeerDbModel ->
+                mapper.mapDbModelToEntity(item)
             }
         }
     }

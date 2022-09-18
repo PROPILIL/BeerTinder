@@ -12,6 +12,7 @@ class BeerFavoriteAdapter :
     ListAdapter<Beer, BeerFavoriteAdapter.BeerFavoriteViewHolder>(BeerListDiffCallback()) {
 
     var onBeerClick: ((Beer) -> Unit)? = null
+    var onBeerLongClick: ((Beer) -> Unit)? = null
 
 
     inner class BeerFavoriteViewHolder(val binding: BeerRecyclerItemBinding) :
@@ -19,7 +20,11 @@ class BeerFavoriteAdapter :
 
         init {
             binding.root.setOnClickListener {
-                getItem(absoluteAdapterPosition)?.let { it1 -> onBeerClick?.invoke(it1) }
+                getItem(absoluteAdapterPosition)?.let { item -> onBeerClick?.invoke(item) }
+            }
+            binding.root.setOnLongClickListener {
+                getItem(absoluteAdapterPosition)?.let {item -> onBeerLongClick?.invoke(item)}
+                true
             }
         }
     }

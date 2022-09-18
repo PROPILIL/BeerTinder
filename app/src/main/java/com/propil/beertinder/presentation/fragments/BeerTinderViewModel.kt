@@ -22,18 +22,10 @@ class BeerTinderViewModel @Inject constructor(
     fun randomBeer() = flow<Resource<Beer>> {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                _currentBeer.value = (Resource.success(data = loadRandomBeerUseCase.invoke()))
+                _currentBeer.value = Resource.success(data = loadRandomBeerUseCase.invoke())
             } catch (e: Exception) {
-                _currentBeer.value = ((Resource.error(data = null, message = "Something went wrong")))
-            }
-        }
-    }
-
-    suspend fun addToFavorite() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _currentBeer.value.data?.let { beerFromData ->
-                val beer = beerFromData.copy()
-                addBeerToFavoriteUseCase.invoke(beer)
+                _currentBeer.value =
+                    Resource.error(data = null, message = "Something went wrong")
             }
         }
     }

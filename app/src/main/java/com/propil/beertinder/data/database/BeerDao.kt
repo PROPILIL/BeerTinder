@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BeerDao {
@@ -13,7 +14,7 @@ interface BeerDao {
     suspend fun addFavoriteBeer(beerDbModel: BeerDbModel)
 
     @Query("SELECT * FROM beers")
-    fun getBeerList(): LiveData<List<BeerDbModel>>
+    fun getBeerList(): Flow<List<BeerDbModel>>
 
     @Query("SELECT * FROM beers WHERE id = :beerId LIMIT 1")
     suspend fun getBeer(beerId: Int): BeerDbModel
