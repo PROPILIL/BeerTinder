@@ -78,7 +78,7 @@ class BeerDetailsFragment : Fragment() {
 
     private fun launchRemoteDetails() {
         lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.loadBeer(beerId).collect()
+            viewModel.loadBeer2(beerId).collect()
             viewModel.beerDetailed.collectLatest {
                 withContext(Dispatchers.Main) {
                     it.let { resource ->
@@ -89,6 +89,8 @@ class BeerDetailsFragment : Fragment() {
                                     binding.beerAbv.text = beer.abv.toString()
                                     ImageLoader.loadImageWithCoil(binding.beerImage, beer.imageUrl)
                                     binding.beerTagline.text = beer.tagline
+                                    binding.beerDescription.text = beer.description
+                                    binding.beerFoodPairing.text = beer.foodPairing?.joinToString(",", postfix = ",")
                                     binding.progressBar.isVisible = false
                                     binding.loadingError.isVisible = false
                                 }
@@ -116,10 +118,7 @@ class BeerDetailsFragment : Fragment() {
                 viewModel.getBeer(beerId).collectLatest {
                     binding.beerName.text = it.name
                     binding.beerAbv.text = it.abv.toString()
-                    binding.beerImage.load(it.imageUrl) {
-                        crossfade(true)
-                        placeholder(R.drawable.beer_mug)
-                    }
+                    ImageLoader.loadImageWithCoil(binding.beerImage, it.imageUrl)
                     binding.beerTagline.text = it.tagline
                     binding.beerDescription.text = it.description
                     binding.beerFoodPairing.text = it.foodPairing?.joinToString(",", postfix = ",")

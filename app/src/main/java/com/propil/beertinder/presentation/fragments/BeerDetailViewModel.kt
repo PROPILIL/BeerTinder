@@ -34,6 +34,15 @@ class BeerDetailViewModel @Inject constructor(
         }
     }
 
+    suspend fun loadBeer2(beerId: Int): Flow<ApiStatus<Beer>> = flow {
+        _beerDetailed.emit(ApiStatus.loading(data = null))
+            try {
+                _beerDetailed.emit(ApiStatus.success(data = loadBeerDetailsUseCase.invoke(beerId)))
+            } catch (e: Exception) {
+                _beerDetailed.emit(ApiStatus.error(data = null, message = "Something went wrong"))
+            }
+    }
+
     fun getBeer(beerId: Int): Flow<Beer> = flow {
         emit(getBeerUseCase.invoke(beerId))
     }
