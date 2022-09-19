@@ -18,9 +18,15 @@ abstract class BeerDatabase: RoomDatabase() {
         private const val DB_NAME = "Beer.db"
         private val LOCK = Any()
 
+        //TODO: Move it into di/DataModule
         fun getInstance(application: Application): BeerDatabase {
             INSTANCE?.let {
                 return it
+            }
+            synchronized(LOCK) {
+                INSTANCE?.let{
+                    return it
+                }
             }
             val db = Room.databaseBuilder(
                 application,
