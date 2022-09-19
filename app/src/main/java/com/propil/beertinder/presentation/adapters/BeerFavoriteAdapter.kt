@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.propil.beertinder.databinding.BeerRecyclerItemBinding
 import com.propil.beertinder.domain.model.Beer
-import com.propil.beertinder.presentation.utils.ImageLoader
+import com.propil.beertinder.presentation.utils.CoilImageLoader
+import com.propil.beertinder.presentation.utils.loadWithCoil
 
 class BeerFavoriteAdapter :
     ListAdapter<Beer, BeerFavoriteAdapter.BeerFavoriteViewHolder>(BeerListDiffCallback()) {
@@ -43,7 +44,7 @@ class BeerFavoriteAdapter :
                 binding.beerName.text = this?.name
                 binding.beerAbv.text = "${this?.abv}"
                 binding.beerTagline.text = this?.tagline
-                ImageLoader.loadImageWithCoil(binding.beerImage, this.imageUrl)
+                binding.beerImage.loadWithCoil(this?.imageUrl)
             }
         }
     }

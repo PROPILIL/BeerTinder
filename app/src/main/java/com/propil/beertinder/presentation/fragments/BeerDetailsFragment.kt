@@ -10,12 +10,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import coil.load
-import com.propil.beertinder.R
 import com.propil.beertinder.data.remote.utils.Status
 import com.propil.beertinder.databinding.BeerDetailFragmentBinding
 import com.propil.beertinder.presentation.BeerTinderApplication
-import com.propil.beertinder.presentation.utils.ImageLoader
+import com.propil.beertinder.presentation.utils.CoilImageLoader
+import com.propil.beertinder.presentation.utils.loadWithCoil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -87,7 +86,7 @@ class BeerDetailsFragment : Fragment() {
                                 resource.data?.let { beer ->
                                     binding.beerName.text = beer.name
                                     binding.beerAbv.text = beer.abv.toString()
-                                    ImageLoader.loadImageWithCoil(binding.beerImage, beer.imageUrl)
+                                    binding.beerImage.loadWithCoil(beer.imageUrl)
                                     binding.beerTagline.text = beer.tagline
                                     binding.beerDescription.text = beer.description
                                     binding.beerFoodPairing.text = beer.foodPairing?.joinToString(",", postfix = ",")
@@ -118,7 +117,7 @@ class BeerDetailsFragment : Fragment() {
                 viewModel.getBeer(beerId).collectLatest {
                     binding.beerName.text = it.name
                     binding.beerAbv.text = it.abv.toString()
-                    ImageLoader.loadImageWithCoil(binding.beerImage, it.imageUrl)
+                    binding.beerImage.loadWithCoil(it.imageUrl)
                     binding.beerTagline.text = it.tagline
                     binding.beerDescription.text = it.description
                     binding.beerFoodPairing.text = it.foodPairing?.joinToString(",", postfix = ",")

@@ -6,7 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.propil.beertinder.databinding.BeerRecyclerItemBinding
 import com.propil.beertinder.domain.model.Beer
-import com.propil.beertinder.presentation.utils.ImageLoader
+import com.propil.beertinder.presentation.utils.loadWithCoil
 
 class BeerListAdapter :
     PagingDataAdapter<Beer, BeerListAdapter.BeerListViewHolder>(BeerListDiffCallback()) {
@@ -33,7 +33,7 @@ class BeerListAdapter :
                 beerName.text = beer?.name
                 beerAbv.text = "${beer?.abv}"
                 beerTagline.text = beer?.tagline
-                ImageLoader.loadImageWithCoil(binding.beerImage, beer?.imageUrl)
+                beerImage.loadWithCoil(beer?.imageUrl)
             }
         }
     }

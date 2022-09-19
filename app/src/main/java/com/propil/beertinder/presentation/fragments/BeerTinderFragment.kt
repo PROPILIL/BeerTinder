@@ -13,7 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import com.propil.beertinder.data.remote.utils.Status
 import com.propil.beertinder.databinding.BeerTinderFragmentBinding
 import com.propil.beertinder.presentation.BeerTinderApplication
-import com.propil.beertinder.presentation.utils.ImageLoader
+import com.propil.beertinder.presentation.utils.CoilImageLoader
+import com.propil.beertinder.presentation.utils.loadWithCoil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -73,7 +74,7 @@ class BeerTinderFragment : Fragment() {
                                 resource.data?.let { beer ->
                                     binding.beerName.text = beer.name
                                     binding.beerAbv.text = beer.abv.toString()
-                                    ImageLoader.loadImageWithCoil(binding.beerImage, beer.imageUrl)
+                                    binding.beerImage.loadWithCoil(beer.imageUrl)
                                     binding.beerTagline.text = beer.tagline
                                     binding.progressBar.isVisible = false
                                     binding.loadingError.isVisible = false
