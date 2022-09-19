@@ -35,21 +35,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateFragments() {
-        binding.bottomNavigation.setOnItemSelectedListener {
+        binding.bottomNavigation.setOnItemReselectedListener {
             when (it.itemId) {
                 R.id.beer_list -> {
                     launchListFragment(BeerListFragment.newInstance())
-                    true
+
                 }
                 R.id.beer_favorites -> {
                     launchListFragment(BeerFavoriteFragment.newInstance())
-                    true
+
                 }
                 R.id.beer_tinder -> {
                     launchListFragment(BeerTinderFragment.newInstance())
-                    true
+
                 }
-                else -> false
             }
         }
     }
