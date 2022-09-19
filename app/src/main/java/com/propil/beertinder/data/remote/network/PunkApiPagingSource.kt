@@ -26,16 +26,16 @@ class PunkApiPagingSource @Inject constructor(
             val page = params.key ?: PUNK_API_STARTING_PAGE_INDEX
             val response = service.loadBeerList(page, params.loadSize)
 
-            if (response.isSuccessful) {
+            return if (response.isSuccessful) {
                 val beers = checkNotNull(response.body())
                 val prevKey = if (page == PUNK_API_STARTING_PAGE_INDEX) null else page - 1
-                return LoadResult.Page(
+                LoadResult.Page(
                     data = beers,
                     prevKey = prevKey,
                     nextKey = page.plus(1)
                 )
             } else {
-                return LoadResult.Error(HttpException(response))
+                LoadResult.Error(HttpException(response))
             }
         } catch (e: HttpException) {
             return LoadResult.Error(e)

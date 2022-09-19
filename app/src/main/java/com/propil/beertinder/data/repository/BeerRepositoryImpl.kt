@@ -1,7 +1,5 @@
 package com.propil.beertinder.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -12,8 +10,6 @@ import com.propil.beertinder.data.mapper.BeerMapper
 import com.propil.beertinder.data.remote.model.BeerDto
 import com.propil.beertinder.data.remote.network.PunkApiPagingSource
 import com.propil.beertinder.data.remote.network.PunkApiService
-import com.propil.beertinder.data.remote.network.RemoteDataSource
-import com.propil.beertinder.data.repository.BeerRepositoryImpl.Companion.NETWORK_PAGE_SIZE
 import com.propil.beertinder.di.ApplicationScope
 import com.propil.beertinder.domain.logic.BeerRepository
 import com.propil.beertinder.domain.model.Beer
