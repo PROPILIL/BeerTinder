@@ -32,6 +32,7 @@ class BeerListFragment : Fragment() {
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[BeerListViewModel::class.java]
     }
+    @Inject
     private lateinit var beerListAdapter: BeerListAdapter
 
     private var _binding: BeerListFragmentBinding? = null
@@ -57,7 +58,6 @@ class BeerListFragment : Fragment() {
         setupRecyclerView()
     }
 
-    //TODO: СНЭК БАР С КНОПКОЙ РЕТРАЙ И ЛОАДИНГ КРУГ КАК НА ЮТЮБЕ. РЕТРАЙ АДАПТЕР АВТОМАТОМ ЧЕРЕЗ НЕСКОТЛЬК СЕК
     private fun setupRecyclerView() {
         initRecyclerView()
         initLoading()

@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.propil.beertinder.data.remote.utils.Status
 import com.propil.beertinder.databinding.BeerTinderFragmentBinding
 import com.propil.beertinder.presentation.BeerTinderApplication
-import com.propil.beertinder.presentation.utils.CoilImageLoader
+import com.propil.beertinder.presentation.utils.ToFavoriteToast
 import com.propil.beertinder.presentation.utils.loadWithCoil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -108,14 +108,6 @@ class BeerTinderFragment : Fragment() {
         }
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(
-            requireActivity().application,
-            message,
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
     private fun yesButtonClick() {
         binding.yesButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
@@ -127,15 +119,24 @@ class BeerTinderFragment : Fragment() {
                                     it.data?.let { currentBeer ->
                                         val beer = currentBeer.copy()
                                         viewModel.addToFavorite(beer)
-                                        showToast("Added to favorite")
+                                        ToFavoriteToast.show(
+                                            requireActivity(),
+                                            "Added to Favorite"
+                                        )
                                     }
                                 }
                                 Status.ERROR -> {
-                                    showToast("Error. Can't add to favorite")
+                                    ToFavoriteToast.show(
+                                        requireActivity(),
+                                        "Error. Can't add to favorite"
+                                    )
                                 }
 
                                 Status.LOADING -> {
-                                    showToast("Loading. Can't add to favorite")
+                                    ToFavoriteToast.show(
+                                        requireActivity(),
+                                        "Loading. Can't add to favorite"
+                                    )
                                 }
                             }
                         }
