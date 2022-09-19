@@ -10,6 +10,7 @@ import javax.inject.Inject
 
 class BeerMapper @Inject constructor() {
 
+
     fun mapDbModelToEntity(beerDbModel: BeerDbModel) = Beer(
         id = beerDbModel.id,
         name = beerDbModel.name,
