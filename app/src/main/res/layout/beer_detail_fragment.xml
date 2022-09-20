@@ -159,17 +159,15 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <com.google.android.material.chip.Chip
                 android:id="@+id/to_favorite_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
-                android:backgroundTint="@color/red"
-                app:fabCustomSize="80dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/card_food_pairing"
-                app:srcCompat="@drawable/ic_baseline_favorite_white"
+                app:chipIcon="@drawable/ic_baseline_favorite_white"
+                tools:text="Favorite"
                 app:tint="@color/white" />
 
 
@@ -178,14 +176,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginVertical="20dp"
                 android:backgroundTint="@color/red"
                 android:clickable="true"
                 android:gravity="center"
                 android:text="NO INTERNET CONNECTION\nCLICK HERE TO RETRY"
                 android:textColor="@color/white"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/to_favorite_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

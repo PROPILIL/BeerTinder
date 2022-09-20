@@ -21,15 +21,16 @@ class BeerMapper @Inject constructor() {
         foodPairing = beerDbModel.foodPairing
     )
 
-    fun mapEntityToDbModel(beer: Beer) = BeerDbModel (
+    fun mapEntityToDbModel(beer: Beer) = BeerDbModel(
         id = beer.id,
         name = beer.name,
         tagline = beer.tagline,
         description = beer.description,
         imageUrl = beer.imageUrl,
         abv = beer.abv,
-        foodPairing = beer.foodPairing
-            )
+        foodPairing = beer.foodPairing,
+        favorite = beer.favorite
+    )
 
     fun mapDtoToEntity(beerDto: BeerDto) = Beer(
         id = beerDto.id,
@@ -41,7 +42,7 @@ class BeerMapper @Inject constructor() {
         foodPairing = beerDto.foodPairing
     )
 
-    fun mapResponseToEntity(response: Response<List<BeerDto>>) : Beer {
+    fun mapResponseToEntity(response: Response<List<BeerDto>>): Beer {
         return response.body()?.let { mapDtoToEntity(it[0]) }!!
     }
 

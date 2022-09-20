@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.propil.beertinder.databinding.BeerRecyclerItemBinding
 import com.propil.beertinder.domain.model.Beer
-import com.propil.beertinder.presentation.utils.CoilImageLoader
 import com.propil.beertinder.presentation.utils.loadWithCoil
 
 class BeerFavoriteAdapter :

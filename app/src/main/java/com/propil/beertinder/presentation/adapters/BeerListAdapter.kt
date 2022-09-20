@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.propil.beertinder.databinding.BeerRecyclerItemBinding
 import com.propil.beertinder.domain.model.Beer
 import com.propil.beertinder.presentation.utils.loadWithCoil
-import javax.inject.Inject
 
 class BeerListAdapter :
     PagingDataAdapter<Beer, BeerListAdapter.BeerListViewHolder>(BeerListDiffCallback()){

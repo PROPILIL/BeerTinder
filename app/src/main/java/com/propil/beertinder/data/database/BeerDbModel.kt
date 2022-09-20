@@ -13,4 +13,5 @@ data class BeerDbModel(
     val imageUrl: String?,
     val abv: Double?,
     val foodPairing: List<String>?,
+    var favorite: Boolean?
 )

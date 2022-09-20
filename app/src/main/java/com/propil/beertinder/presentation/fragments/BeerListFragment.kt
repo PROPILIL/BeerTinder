@@ -32,8 +32,8 @@ class BeerListFragment : Fragment() {
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[BeerListViewModel::class.java]
     }
-    @Inject
-    private lateinit var beerListAdapter: BeerListAdapter
+
+    lateinit var beerListAdapter: BeerListAdapter
 
     private var _binding: BeerListFragmentBinding? = null
     private val binding: BeerListFragmentBinding

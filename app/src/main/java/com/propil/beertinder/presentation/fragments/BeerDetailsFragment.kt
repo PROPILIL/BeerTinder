@@ -1,20 +1,22 @@
 package com.propil.beertinder.presentation.fragments
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.propil.beertinder.R
 import com.propil.beertinder.data.remote.utils.Status
 import com.propil.beertinder.databinding.BeerDetailFragmentBinding
 import com.propil.beertinder.presentation.BeerTinderApplication
-import com.propil.beertinder.presentation.utils.CoilImageLoader
 import com.propil.beertinder.presentation.utils.ToFavoriteToast
+import com.propil.beertinder.presentation.utils.changeColor
 import com.propil.beertinder.presentation.utils.loadWithCoil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -123,6 +125,8 @@ class BeerDetailsFragment : Fragment() {
                     binding.beerTagline.text = it.tagline
                     binding.beerDescription.text = it.description
                     binding.beerFoodPairing.text = it.foodPairing?.joinToString(",", postfix = ",")
+
+
                 }
             }
         }
@@ -216,3 +220,4 @@ class BeerDetailsFragment : Fragment() {
     }
 
 }
+
