@@ -35,6 +35,7 @@ class BeerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addBeerToFavorite(beer: Beer) {
+        beer.favorite = true
         val dbModel = mapper.mapEntityToDbModel(beer)
         beerDao.addFavoriteBeer(dbModel)
     }
@@ -45,6 +46,7 @@ class BeerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteBeer(beer: Beer) {
+        beer.favorite = false
         beerDao.deleteFavoriteBeer(beer.id)
     }
 

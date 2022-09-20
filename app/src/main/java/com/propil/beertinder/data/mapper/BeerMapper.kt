@@ -18,7 +18,8 @@ class BeerMapper @Inject constructor() {
         description = beerDbModel.description,
         imageUrl = beerDbModel.imageUrl,
         abv = beerDbModel.abv,
-        foodPairing = beerDbModel.foodPairing
+        foodPairing = beerDbModel.foodPairing,
+        favorite = beerDbModel.favorite
     )
 
     fun mapEntityToDbModel(beer: Beer) = BeerDbModel(

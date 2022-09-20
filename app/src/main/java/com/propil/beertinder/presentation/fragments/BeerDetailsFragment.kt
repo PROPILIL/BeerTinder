@@ -119,6 +119,9 @@ class BeerDetailsFragment : Fragment() {
             viewModel.getBeer(beerId)
             CoroutineScope(Dispatchers.Main).launch {
                 viewModel.getBeer(beerId).collectLatest {
+                    if(it.favorite == true) {
+                        binding.toFavoriteButton.changeColor(requireActivity(), R.color.red)
+                    }
                     binding.beerName.text = it.name
                     binding.beerAbv.text = it.abv.toString()
                     binding.beerImage.loadWithCoil(it.imageUrl)
