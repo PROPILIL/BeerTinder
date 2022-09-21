@@ -18,6 +18,7 @@
         android:theme="@style/Theme.BeerTinder"
         tools:targetApi="31" >
         <activity
+            android:theme="@style/Theme.BeerTinder.Launcher"
             android:name=".presentation.MainActivity"
             android:exported="true" >
             <intent-filter>

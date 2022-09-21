@@ -19,3 +19,14 @@ object UtilityObject {
     }
 
 }
+
+fun main(){
+
+    val list = listOf("Spicy carne asada with a pico de gallo sauce",
+        "Shredded chicken tacos with a mango chilli lime salsa",
+        "Cheesecake with a passion fruit swirl sauce")
+
+    val string = list.joinToString()
+
+    print(string)
+}

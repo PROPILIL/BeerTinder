@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.propil.beertinder.R
 import com.propil.beertinder.data.remote.utils.Status
 import com.propil.beertinder.databinding.BeerDetailFragmentBinding
+import com.propil.beertinder.domain.model.Beer
 import com.propil.beertinder.presentation.BeerTinderApplication
 import com.propil.beertinder.presentation.utils.ToFavoriteToast
 import com.propil.beertinder.presentation.utils.changeColor
@@ -87,15 +88,17 @@ class BeerDetailsFragment : Fragment() {
                         when (resource.status) {
                             Status.SUCCESS -> {
                                 resource.data?.let { beer ->
-                                    binding.beerName.text = beer.name
-                                    binding.beerAbv.text = beer.abv.toString()
-                                    binding.beerImage.loadWithCoil(beer.imageUrl)
-                                    binding.beerTagline.text = beer.tagline
-                                    binding.beerDescription.text = beer.description
-                                    binding.beerFoodPairing.text =
-                                        beer.foodPairing?.joinToString(",", postfix = ",")
-                                    binding.progressBar.isVisible = false
-                                    binding.loadingError.isVisible = false
+                                    with(binding) {
+                                        beerName.text = beer.name
+                                        beerAbv.text = beer.abv.toString()
+                                        beerTagline.text = beer.tagline
+                                        beerImage.loadWithCoil(beer.imageUrl)
+                                        beerDescription.text = beer.description
+                                        beerFoodPairing.text = beer.foodPairing?.joinToString()
+                                        progressBar.isVisible = false
+                                        loadingError.isVisible = false
+                                    }
+
                                 }
                             }
                             Status.ERROR -> {
@@ -114,22 +117,27 @@ class BeerDetailsFragment : Fragment() {
         }
     }
 
+    private fun inFavoriteCheck(beer: Beer) {
+        if (beer.favorite == true) {
+            binding.toFavoriteButton.changeColor(requireActivity(), R.color.red)
+            binding.toFavoriteButton.text = getText(R.string.favorite_button_already_added)
+        } else {
+            binding.toFavoriteButton.text = getText(R.string.favorite_button_add)
+        }
+    }
+
     private fun launchLocalDetails() {
         lifecycleScope.launch(Dispatchers.IO) {
             viewModel.getBeer(beerId)
-            CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.Main) {
                 viewModel.getBeer(beerId).collectLatest {
-                    if(it.favorite == true) {
-                        binding.toFavoriteButton.changeColor(requireActivity(), R.color.red)
-                    }
+                    inFavoriteCheck(it)
                     binding.beerName.text = it.name
                     binding.beerAbv.text = it.abv.toString()
                     binding.beerImage.loadWithCoil(it.imageUrl)
                     binding.beerTagline.text = it.tagline
                     binding.beerDescription.text = it.description
-                    binding.beerFoodPairing.text = it.foodPairing?.joinToString(",", postfix = ",")
-
-
+                    binding.beerFoodPairing.text = it.foodPairing?.joinToString()
                 }
             }
         }

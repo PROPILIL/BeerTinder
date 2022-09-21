@@ -167,7 +167,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/card_food_pairing"
                 app:chipIcon="@drawable/ic_baseline_favorite_white"
-                tools:text="Favorite"
+                android:text="@string/favorite_button_add"
                 app:tint="@color/white" />
 
 
