@@ -137,8 +137,8 @@ class BeerTinderFragment : Fragment() {
                         }
                     }
                 }
-
             }
+            loadRandomBeer()
         }
     }
 
