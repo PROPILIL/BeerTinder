@@ -1,5 +1,6 @@
 package com.propil.beertinder.presentation.fragments
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.propil.beertinder.data.remote.utils.ApiStatus
 import com.propil.beertinder.domain.logic.AddBeerToFavoriteUseCase
@@ -18,7 +19,7 @@ class BeerTinderViewModel @Inject constructor(
     private val _currentBeer = MutableStateFlow<ApiStatus<Beer>>(ApiStatus.loading(null))
     val currentBeer: StateFlow<ApiStatus<Beer>> = _currentBeer.asStateFlow()
 
-    fun randomBeer() = flow<ApiStatus<Beer>> {
+    suspend fun randomBeer() = flow<ApiStatus<Beer>> {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 _currentBeer.value = ApiStatus.success(data = loadRandomBeerUseCase.invoke())

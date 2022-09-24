@@ -109,38 +109,35 @@ class BeerTinderFragment : Fragment() {
 
     private fun yesButtonClick() {
         binding.yesButton.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                viewModel.currentBeer.collectLatest {
-                    withContext(Dispatchers.Main) {
-                        it.let { resource ->
-                            when (resource.status) {
-                                Status.SUCCESS -> {
-                                    it.data?.let { currentBeer ->
-                                        val beer = currentBeer.copy()
-                                        viewModel.addToFavorite(beer)
-                                        ToFavoriteToast.show(
-                                            requireActivity(),
-                                            "Added to Favorite"
-                                        )
-                                    }
-                                }
-                                Status.ERROR -> {
-                                    ToFavoriteToast.show(
-                                        requireActivity(),
-                                        "Error. Can't add to favorite"
-                                    )
-                                }
-
-                                Status.LOADING -> {
-                                    ToFavoriteToast.show(
-                                        requireActivity(),
-                                        "Loading. Can't add to favorite"
-                                    )
-                                }
+            lifecycleScope.launch(Dispatchers.Main) {
+                val value = viewModel.currentBeer.value
+                value.let { resource ->
+                    when (resource.status) {
+                        Status.SUCCESS -> {
+                            resource.data?.let { currentBeer ->
+                                viewModel.addToFavorite(currentBeer)
+                                ToFavoriteToast.show(
+                                    requireActivity(),
+                                    "Added to Favorite"
+                                )
                             }
+                        }
+                        Status.ERROR -> {
+                            ToFavoriteToast.show(
+                                requireActivity(),
+                                "Error. Can't add to favorite"
+                            )
+                        }
+
+                        Status.LOADING -> {
+                            ToFavoriteToast.show(
+                                requireActivity(),
+                                "Loading. Can't add to favorite"
+                            )
                         }
                     }
                 }
+
             }
         }
     }

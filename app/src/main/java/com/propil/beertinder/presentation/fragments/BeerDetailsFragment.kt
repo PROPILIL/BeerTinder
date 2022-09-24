@@ -1,12 +1,10 @@
 package com.propil.beertinder.presentation.fragments
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -19,10 +17,10 @@ import com.propil.beertinder.presentation.BeerTinderApplication
 import com.propil.beertinder.presentation.utils.ToFavoriteToast
 import com.propil.beertinder.presentation.utils.changeColor
 import com.propil.beertinder.presentation.utils.loadWithCoil
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -81,8 +79,9 @@ class BeerDetailsFragment : Fragment() {
 
     private fun launchRemoteDetails() {
         lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.loadBeer2(beerId).collect()
-            viewModel.beerDetailed.collectLatest {
+            viewModel.loadBeer(beerId).collect()
+            viewModel.beerDetailed
+                .collectLatest {
                 withContext(Dispatchers.Main) {
                     it.let { resource ->
                         when (resource.status) {
@@ -132,12 +131,15 @@ class BeerDetailsFragment : Fragment() {
             withContext(Dispatchers.Main) {
                 viewModel.getBeer(beerId).collectLatest {
                     inFavoriteCheck(it)
-                    binding.beerName.text = it.name
-                    binding.beerAbv.text = it.abv.toString()
-                    binding.beerImage.loadWithCoil(it.imageUrl)
-                    binding.beerTagline.text = it.tagline
-                    binding.beerDescription.text = it.description
-                    binding.beerFoodPairing.text = it.foodPairing?.joinToString()
+                    with(binding) {
+                        beerName.text = it.name
+                        beerAbv.text = it.abv.toString()
+                        beerImage.loadWithCoil(it.imageUrl)
+                        beerTagline.text = it.tagline
+                        beerDescription.text = it.description
+                        beerFoodPairing.text = it.foodPairing?.joinToString()
+                    }
+
                 }
             }
         }

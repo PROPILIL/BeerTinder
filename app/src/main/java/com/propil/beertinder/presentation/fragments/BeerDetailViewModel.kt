@@ -22,19 +22,7 @@ class BeerDetailViewModel @Inject constructor(
     private val _beerDetailed = MutableStateFlow<ApiStatus<Beer>>(ApiStatus.loading(null))
     val beerDetailed: StateFlow<ApiStatus<Beer>> = _beerDetailed.asStateFlow()
 
-    suspend fun loadBeer(beerId: Int) = flow<ApiStatus<Beer>> {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                _beerDetailed.value = ApiStatus
-                    .success(data = loadBeerDetailsUseCase.invoke(beerId))
-            } catch (e: Exception) {
-                _beerDetailed.value = ApiStatus
-                    .error(data = null, message = "Something went wrong")
-            }
-        }
-    }
-
-    suspend fun loadBeer2(beerId: Int): Flow<ApiStatus<Beer>> = flow {
+    suspend fun loadBeer(beerId: Int): Flow<ApiStatus<Beer>> = flow {
         _beerDetailed.emit(ApiStatus.loading(data = null))
             try {
                 _beerDetailed.emit(ApiStatus.success(data = loadBeerDetailsUseCase.invoke(beerId)))

@@ -8,7 +8,7 @@
         android:right="20dp">
         <bitmap
             android:src="@drawable/img"
-            android:gravity="fill"
+            android:gravity="center_horizontal"
             android:mipMap="true"
             />
     </item>
