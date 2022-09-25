@@ -23,12 +23,14 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             binding.bottomNavigation.selectedItemId = R.id.beer_list
+            launchFragment(BeerListFragment.newInstance())
+
         } else {
             binding.bottomNavigation.selectedItemId
         }
     }
 
-    private fun launchListFragment(fragment: Fragment) {
+    private fun launchFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .addToBackStack(null)
@@ -36,20 +38,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateFragments() {
-        binding.bottomNavigation.setOnItemReselectedListener {
+        binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.beer_list -> {
-                    launchListFragment(BeerListFragment.newInstance())
-
+                    launchFragment(BeerListFragment.newInstance())
+                    true
                 }
                 R.id.beer_favorites -> {
-                    launchListFragment(BeerFavoriteFragment.newInstance())
-
+                    launchFragment(BeerFavoriteFragment.newInstance())
+                    true
                 }
                 R.id.beer_tinder -> {
-                    launchListFragment(BeerTinderFragment.newInstance())
-
+                    launchFragment(BeerTinderFragment.newInstance())
+                    true
                 }
+                else -> false
+            }
+        }
+
+        binding.bottomNavigation.setOnItemReselectedListener {
+            when (it.itemId) {
+                R.id.beer_list -> Unit
+                R.id.beer_favorites -> Unit
+                R.id.beer_tinder -> Unit
             }
         }
     }
