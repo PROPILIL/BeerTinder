@@ -1,4 +1,4 @@
-package com.propil.beertinder.presentation.fragments
+package com.propil.beertinder.presentation.details
 
 import android.content.Context
 import android.os.Bundle
@@ -14,13 +14,13 @@ import com.propil.beertinder.data.remote.utils.Status
 import com.propil.beertinder.databinding.BeerDetailFragmentBinding
 import com.propil.beertinder.domain.model.Beer
 import com.propil.beertinder.presentation.BeerTinderApplication
+import com.propil.beertinder.presentation.ViewModelFactory
 import com.propil.beertinder.presentation.utils.ToFavoriteToast
 import com.propil.beertinder.presentation.utils.changeColor
 import com.propil.beertinder.presentation.utils.loadWithCoil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

@@ -1,8 +1,7 @@
-package com.propil.beertinder.presentation.fragments
+package com.propil.beertinder.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.propil.beertinder.di.ApplicationScope
 import javax.inject.Inject
 import javax.inject.Provider
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/punk_navigation"
+    app:startDestination="@id/beerListFragment">
+
+    <fragment
+        android:id="@+id/beerListFragment"
+        android:name="com.propil.beertinder.presentation.beerList.BeerListFragment"
+        android:label="BeerListFragment" />
+    <fragment
+        android:id="@+id/beerTinderFragment"
+        android:name="com.propil.beertinder.presentation.beerTinder.BeerTinderFragment"
+        android:label="BeerTinderFragment" />
+    <fragment
+        android:id="@+id/beerFavoriteFragment"
+        android:name="com.propil.beertinder.presentation.favorite.BeerFavoriteFragment"
+        android:label="BeerFavoriteFragment" />
+</navigation>

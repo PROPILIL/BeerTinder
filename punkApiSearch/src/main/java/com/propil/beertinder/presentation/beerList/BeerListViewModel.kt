@@ -1,4 +1,4 @@
-package com.propil.beertinder.presentation.fragments
+package com.propil.beertinder.presentation.beerList
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

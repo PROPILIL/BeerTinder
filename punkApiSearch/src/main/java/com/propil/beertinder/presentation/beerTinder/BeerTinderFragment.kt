@@ -1,4 +1,4 @@
-package com.propil.beertinder.presentation.fragments
+package com.propil.beertinder.presentation.beerTinder
 
 import android.content.Context
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.propil.beertinder.data.remote.utils.Status
 import com.propil.beertinder.databinding.BeerTinderFragmentBinding
 import com.propil.beertinder.presentation.BeerTinderApplication
+import com.propil.beertinder.presentation.ViewModelFactory
 import com.propil.beertinder.presentation.utils.ToFavoriteToast
 import com.propil.beertinder.presentation.utils.loadWithCoil
 import kotlinx.coroutines.Dispatchers

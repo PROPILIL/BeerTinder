@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/beer_list"
+        android:id="@+id/beerListFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_view_comfy_24"
         android:title="@string/beer_list_tab"/>
 
     <item
-        android:id="@+id/beer_favorites"
+        android:id="@+id/beerFavoriteFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_favorite_24_1"
         android:title="@string/beer_favorite_tab"/>
 
     <item
-        android:id="@+id/beer_tinder"
+        android:id="@+id/beerTinderFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_whatshot_24"
         android:title="@string/beer_random_tab"/>

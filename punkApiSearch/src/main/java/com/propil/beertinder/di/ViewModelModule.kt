@@ -1,14 +1,13 @@
 package com.propil.beertinder.di
 
 import androidx.lifecycle.ViewModel
-import com.propil.beertinder.presentation.fragments.BeerDetailViewModel
-import com.propil.beertinder.presentation.fragments.BeerFavoritesViewModel
-import com.propil.beertinder.presentation.fragments.BeerListViewModel
-import com.propil.beertinder.presentation.fragments.BeerTinderViewModel
+import com.propil.beertinder.presentation.details.BeerDetailViewModel
+import com.propil.beertinder.presentation.favorite.BeerFavoritesViewModel
+import com.propil.beertinder.presentation.beerList.BeerListViewModel
+import com.propil.beertinder.presentation.beerTinder.BeerTinderViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import dagger.multibindings.StringKey
 
 
 @Module

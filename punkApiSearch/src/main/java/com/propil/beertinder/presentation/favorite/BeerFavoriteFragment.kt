@@ -1,4 +1,4 @@
-package com.propil.beertinder.presentation.fragments
+package com.propil.beertinder.presentation.favorite
 
 import android.content.Context
 import android.os.Bundle
@@ -8,11 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.propil.beertinder.R
 import com.propil.beertinder.databinding.BeerListFragmentBinding
+import com.propil.beertinder.domain.model.Beer
 import com.propil.beertinder.presentation.BeerTinderApplication
-import com.propil.beertinder.presentation.adapters.BeerListAdapter
+import com.propil.beertinder.presentation.adapters.BeerFavoriteAdapter
+import com.propil.beertinder.presentation.details.BeerDetailsFragment
+import com.propil.beertinder.presentation.ViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -20,7 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class BeerListFragment : Fragment() {
+class BeerFavoriteFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -30,10 +33,9 @@ class BeerListFragment : Fragment() {
     }
 
     private val viewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[BeerListViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[BeerFavoritesViewModel::class.java]
     }
-
-    lateinit var beerListAdapter: BeerListAdapter
+    private lateinit var beerFavoritesAdapter: BeerFavoriteAdapter
 
     private var _binding: BeerListFragmentBinding? = null
     private val binding: BeerListFragmentBinding
@@ -55,74 +57,54 @@ class BeerListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        collectData()
         setupRecyclerView()
     }
 
     private fun setupRecyclerView() {
-        initRecyclerView()
-        initLoading()
-        collectData()
-        setupItemClickListener()
-        setupRetryClickListener()
-
+        val recyclerView = binding.beerListRecycler
+        with(recyclerView) {
+            beerFavoritesAdapter = BeerFavoriteAdapter()
+            adapter = beerFavoritesAdapter
+        }
+        setupClickListener()
+        setupOnLongClickListener()
     }
 
     private fun collectData() {
         lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.loadBeerList()
+            viewModel.getBeerList()
                 .distinctUntilChanged()
                 .collectLatest {
-                    beerListAdapter.submitData(it)
+                    withContext(Dispatchers.Main) {
+                        beerFavoritesAdapter.submitList(it)
+                    }
+
                 }
         }
+
     }
 
-    private fun initRecyclerView() {
-        val recyclerView = binding.beerListRecycler
-        with(recyclerView) {
-            beerListAdapter = BeerListAdapter()
-            adapter = beerListAdapter
-        }
-        binding.swipeRefresh.setOnRefreshListener { beerListAdapter.refresh() }
-    }
-
-    private fun initLoading() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            beerListAdapter.loadStateFlow.collectLatest {
-                withContext(Dispatchers.Main) {
-                    when (it.refresh) {
-                        is LoadState.NotLoading -> {
-                            binding.swipeRefresh.isRefreshing = false
-                            binding.loadingError.visibility = View.GONE
-                        }
-                        is LoadState.Loading -> {
-                            binding.swipeRefresh.isRefreshing = true
-                        }
-                        is LoadState.Error -> {
-                            binding.loadingError.visibility = View.VISIBLE
-                            binding.swipeRefresh.isRefreshing = false
-                        }
-                    }
-                    if (it.append is LoadState.Error) {
-                        binding.loadingError.visibility = View.VISIBLE
-                    }
-                }
-            }
+    private fun setupClickListener() {
+        beerFavoritesAdapter.onBeerClick = {
+            launchDetails(BeerDetailsFragment.newDetailLocalInstance(it.id))
         }
     }
 
-    private fun setupItemClickListener() {
-        beerListAdapter.onBeerClick = {
-            launchDetails(BeerDetailsFragment.newDetailRemoteInstance(it.id))
+    private fun setupOnLongClickListener() {
+        beerFavoritesAdapter.onBeerLongClick = {
+            deleteAlert(it)
         }
     }
 
-    private fun setupRetryClickListener() {
-        binding.loadingError.setOnClickListener {
-            beerListAdapter.refresh()
-        }
+    private fun deleteAlert(beer: Beer) {
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle("Wanna delete selected beer?")
+            .setNegativeButton("Cancel", null)
+            .setPositiveButton("Yes, delete") { _, _ ->
+                viewModel.deleteFavBeer(beer)
+            }.show()
     }
-
 
     private fun launchDetails(fragment: Fragment) {
         requireActivity().supportFragmentManager.beginTransaction()
@@ -132,15 +114,14 @@ class BeerListFragment : Fragment() {
 
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     companion object {
-        fun newInstance(): BeerListFragment {
-            return BeerListFragment()
+        fun newInstance(): BeerFavoriteFragment {
+            return BeerFavoriteFragment()
         }
     }
 }

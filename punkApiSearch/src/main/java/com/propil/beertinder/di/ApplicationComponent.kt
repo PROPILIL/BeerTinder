@@ -1,10 +1,10 @@
 package com.propil.beertinder.di
 
 import android.app.Application
-import com.propil.beertinder.presentation.fragments.BeerDetailsFragment
-import com.propil.beertinder.presentation.fragments.BeerFavoriteFragment
-import com.propil.beertinder.presentation.fragments.BeerListFragment
-import com.propil.beertinder.presentation.fragments.BeerTinderFragment
+import com.propil.beertinder.presentation.details.BeerDetailsFragment
+import com.propil.beertinder.presentation.favorite.BeerFavoriteFragment
+import com.propil.beertinder.presentation.beerList.BeerListFragment
+import com.propil.beertinder.presentation.beerTinder.BeerTinderFragment
 import dagger.BindsInstance
 import dagger.Component
 
