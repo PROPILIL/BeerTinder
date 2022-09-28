@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.propil.beertinder.R
 import com.propil.beertinder.databinding.BeerListFragmentBinding
@@ -87,7 +88,10 @@ class BeerFavoriteFragment : Fragment() {
 
     private fun setupClickListener() {
         beerFavoritesAdapter.onBeerClick = {
-            launchDetails(BeerDetailsFragment.newDetailLocalInstance(it.id))
+            launchDetails(
+                BeerDetailsFragment.BEER_FAVORITE_FRAGMENT,
+                it.id
+            )
         }
     }
 
@@ -106,12 +110,20 @@ class BeerFavoriteFragment : Fragment() {
             }.show()
     }
 
-    private fun launchDetails(fragment: Fragment) {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
-            .commit()
+//    private fun launchDetails(fragment: Fragment) {
+//        requireActivity().supportFragmentManager.beginTransaction()
+//            .replace(R.id.fragment_container, fragment)
+//            .addToBackStack(null)
+//            .commit()
+//
+//    }
 
+    private fun launchDetails(dataSource: String, beerId: Int) {
+        findNavController()
+            .navigate(
+                BeerFavoriteFragmentDirections
+                    .actionBeerFavoriteFragmentToBeerDetailsFragment(beerId, dataSource)
+            )
     }
 
     override fun onDestroyView() {

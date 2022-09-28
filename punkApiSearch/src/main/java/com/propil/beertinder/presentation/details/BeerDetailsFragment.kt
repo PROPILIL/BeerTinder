@@ -30,7 +30,6 @@ class BeerDetailsFragment : Fragment() {
 
     private val args by navArgs<BeerDetailsFragmentArgs>()
 
-
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -46,8 +45,6 @@ class BeerDetailsFragment : Fragment() {
     private var _binding: BeerDetailFragmentBinding? = null
     private val binding: BeerDetailFragmentBinding
         get() = _binding ?: throw RuntimeException("BeerDetailBinding = null")
-
-    private var beerId = 0
 
     override fun onAttach(context: Context) {
         component.inject(this)
@@ -129,9 +126,9 @@ class BeerDetailsFragment : Fragment() {
 
     private fun launchLocalDetails() {
         lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.getBeer(beerId)
+            viewModel.getBeer(args.beerId)
             withContext(Dispatchers.Main) {
-                viewModel.getBeer(beerId).collectLatest {
+                viewModel.getBeer(args.beerId).collectLatest {
                     inFavoriteCheck(it)
                     with(binding) {
                         beerName.text = it.name
@@ -191,22 +188,9 @@ class BeerDetailsFragment : Fragment() {
     }
 
     companion object {
-        private const val BEER_ID = "BEER_ID"
-        private const val DATA_SOURCE = "DATA_SOURCE"
         const val BEER_LIST_FRAGMENT = "BEER_LIST_FRAGMENT"
-        private const val BEER_FAVORITE_FRAGMENT = "BEER_FAVORITE_FRAGMENT"
-        private const val UNKNOWN_DATA_SOURCE = ""
+        const val BEER_FAVORITE_FRAGMENT = "BEER_FAVORITE_FRAGMENT"
 
-
-        fun newDetailLocalInstance(beerId: Int): BeerDetailsFragment {
-            return BeerDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(DATA_SOURCE, BEER_FAVORITE_FRAGMENT)
-                    putInt(BEER_ID, beerId)
-                }
-            }
-        }
     }
-
 }
 
