@@ -110,14 +110,6 @@ class BeerFavoriteFragment : Fragment() {
             }.show()
     }
 
-//    private fun launchDetails(fragment: Fragment) {
-//        requireActivity().supportFragmentManager.beginTransaction()
-//            .replace(R.id.fragment_container, fragment)
-//            .addToBackStack(null)
-//            .commit()
-//
-//    }
-
     private fun launchDetails(dataSource: String, beerId: Int) {
         findNavController()
             .navigate(
