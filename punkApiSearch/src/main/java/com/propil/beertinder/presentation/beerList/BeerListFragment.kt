@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.propil.beertinder.R
 import com.propil.beertinder.databinding.BeerListFragmentBinding
@@ -115,7 +116,7 @@ class BeerListFragment : Fragment() {
 
     private fun setupItemClickListener() {
         beerListAdapter.onBeerClick = {
-            launchDetails(BeerDetailsFragment.newDetailRemoteInstance(it.id))
+            launchDetails( BeerDetailsFragment.BEER_LIST_FRAGMENT,it.id)
         }
     }
 
@@ -125,13 +126,9 @@ class BeerListFragment : Fragment() {
         }
     }
 
-
-    private fun launchDetails(fragment: Fragment) {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
-            .commit()
-
+    private fun launchDetails(dataSource: String, beerId: Int) {
+        findNavController()
+            .navigate(BeerListFragmentDirections.actionBeerListFragmentToBeerDetailsFragment(beerId,dataSource))
     }
 
 
@@ -140,9 +137,4 @@ class BeerListFragment : Fragment() {
         _binding = null
     }
 
-    companion object {
-        fun newInstance(): BeerListFragment {
-            return BeerListFragment()
-        }
-    }
 }

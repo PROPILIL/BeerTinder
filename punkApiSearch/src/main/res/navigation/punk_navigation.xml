@@ -7,7 +7,11 @@
     <fragment
         android:id="@+id/beerListFragment"
         android:name="com.propil.beertinder.presentation.beerList.BeerListFragment"
-        android:label="BeerListFragment" />
+        android:label="BeerListFragment" >
+        <action
+            android:id="@+id/action_beerListFragment_to_beerDetailsFragment"
+            app:destination="@id/beerDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/beerTinderFragment"
         android:name="com.propil.beertinder.presentation.beerTinder.BeerTinderFragment"
@@ -15,5 +19,20 @@
     <fragment
         android:id="@+id/beerFavoriteFragment"
         android:name="com.propil.beertinder.presentation.favorite.BeerFavoriteFragment"
-        android:label="BeerFavoriteFragment" />
+        android:label="BeerFavoriteFragment" >
+        <action
+            android:id="@+id/action_beerFavoriteFragment_to_beerDetailsFragment"
+            app:destination="@id/beerDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/beerDetailsFragment"
+        android:name="com.propil.beertinder.presentation.details.BeerDetailsFragment"
+        android:label="BeerDetailsFragment" >
+        <argument
+            android:name="beerId"
+            app:argType="integer" />
+        <argument
+            android:name="data_source"
+            app:argType="string" />
+    </fragment>
 </navigation>
