@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.propil.beertinder.data.remote.utils.ApiStatus
 import com.propil.beertinder.domain.logic.AddBeerToFavoriteUseCase
 import com.propil.beertinder.domain.logic.LoadRandomBeerUseCase
+import com.propil.beertinder.domain.logic.LoadRandomBeersUseCase
 import com.propil.beertinder.domain.model.Beer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 class BeerTinderViewModel @Inject constructor(
     private val loadRandomBeerUseCase: LoadRandomBeerUseCase,
-    private val addBeerToFavoriteUseCase: AddBeerToFavoriteUseCase
+    private val addBeerToFavoriteUseCase: AddBeerToFavoriteUseCase,
+    private val loadRandomBeersUseCase: LoadRandomBeersUseCase
 ) : ViewModel() {
 
     private val _currentBeer = MutableStateFlow<ApiStatus<Beer>>(ApiStatus.loading(null))

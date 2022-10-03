@@ -14,8 +14,10 @@ import com.propil.beertinder.di.ApplicationScope
 import com.propil.beertinder.domain.logic.BeerRepository
 import com.propil.beertinder.domain.model.Beer
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import kotlin.random.Random
 
 @ApplicationScope
 class BeerRepositoryImpl @Inject constructor(
@@ -71,6 +73,14 @@ class BeerRepositoryImpl @Inject constructor(
     override suspend fun loadBeerDetails(beerId: Int): Beer {
         val response = punkApiService.loadBeerDetails(beerId)
         return mapper.mapResponseToEntity(response)
+    }
+
+    override suspend fun loadRandomBeers(): List<Beer>{
+        val randomValues = List(3) { Random.nextInt(1, 325)}
+            .joinToString(separator = "|")
+        val response = punkApiService.loadRandomBeers(randomValues)
+        return mapper.mapResponseRandomToEntity(response)
+
     }
 
     companion object {

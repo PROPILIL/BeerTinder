@@ -8,7 +8,5 @@ class LoadRandomBeerUseCase @Inject constructor(
     private val repository: BeerRepository
 ) {
 
-    suspend operator fun invoke(): Beer {
-        return repository.loadRandomBeer()
-    }
+    suspend operator fun invoke() = repository.loadRandomBeer()
 }

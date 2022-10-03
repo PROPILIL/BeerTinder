@@ -3,6 +3,8 @@ package com.propil.beertinder.data.mapper
 import com.propil.beertinder.data.database.BeerDbModel
 import com.propil.beertinder.data.remote.model.BeerDto
 import com.propil.beertinder.domain.model.Beer
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -45,4 +47,10 @@ class BeerMapper @Inject constructor() {
         return response.body()?.let { mapDtoToEntity(it[0]) }!!
     }
 
+    fun mapResponseRandomToEntity(response: Response<List<BeerDto>>):List<Beer>{
+        val mappedResponse = response.body()?.map { beerDto ->
+            mapDtoToEntity(beerDto)
+        }!!
+        return mappedResponse
+    }
 }

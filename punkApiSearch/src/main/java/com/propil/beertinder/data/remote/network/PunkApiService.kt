@@ -14,6 +14,7 @@ interface PunkApiService {
     suspend fun loadBeerList(
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
+
     ): Response<List<BeerDto>>
 
     @GET("beers/random")
@@ -21,5 +22,9 @@ interface PunkApiService {
 
     @GET("beers/{id}")
     suspend fun loadBeerDetails(@Path("id") id: Int): Response<List<BeerDto>>
+
+    @GET("beers?")
+    suspend fun loadRandomBeers(@Query("ids") ids: String): Response<List<BeerDto>>
+
 
 }

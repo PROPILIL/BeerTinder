@@ -26,5 +26,5 @@ interface BeerRepository {
 
     suspend fun loadBeerDetails(beerId: Int): Beer
 
-
+    suspend fun loadRandomBeers(): List<Beer>
 }

@@ -6,7 +6,5 @@ import javax.inject.Inject
 class GetBeerUseCase @Inject constructor(
     private val repository: BeerRepository
 ) {
-    suspend operator fun invoke(beerId: Int): Beer {
-        return repository.getBeer(beerId)
-    }
+    suspend operator fun invoke(beerId: Int) = repository.getBeer(beerId)
 }
