@@ -21,7 +21,23 @@
         <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/app/src/main/res/layout/default_load_state.xml" value="0.264945652173913" />
         <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/app/src/main/res/layout/loading_layout_item.xml" value="0.1" />
         <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/app/src/main/res/menu/beer_bottom_navigation_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.334" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/drawable/heart_button.xml" value="0.1675" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/drawable/ic_baseline_favorite_24_1.xml" value="0.334" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.334" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/drawable/ic_baseline_favorite_white.xml" value="0.334" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/drawable/ic_baseline_view_comfy_24.xml" value="0.334" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/drawable/ic_baseline_whatshot_24.xml" value="0.334" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/drawable/ic_launcher_background.xml" value="0.334" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/drawable/like_button.xml" value="0.334" />
         <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/layout/activity_main.xml" value="0.32323232323232326" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/layout/beer_card_stack.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/layout/beer_list_fragment.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/layout/beer_recycler_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/layout/beer_tinder_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/layout/default_load_state.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/layout/loading_layout_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/vladr/AndroidStudioProjects/BeerTinder/punkApiSearch/src/main/res/layout/tinder_recycler_item.xml" value="0.365625" />
       </map>
     </option>
   </component>

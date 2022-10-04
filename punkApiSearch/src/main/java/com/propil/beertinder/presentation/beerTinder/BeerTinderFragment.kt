@@ -13,6 +13,7 @@ import com.propil.beertinder.data.remote.utils.Status
 import com.propil.beertinder.databinding.BeerTinderFragmentBinding
 import com.propil.beertinder.presentation.BeerTinderApplication
 import com.propil.beertinder.presentation.ViewModelFactory
+import com.propil.beertinder.presentation.adapters.BeerTinderAdapter
 import com.propil.beertinder.presentation.utils.ToFavoriteToast
 import com.propil.beertinder.presentation.utils.loadWithCoil
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +36,8 @@ class BeerTinderFragment : Fragment() {
         ViewModelProvider(this, viewModelFactory)[BeerTinderViewModel::class.java]
     }
 
+    private lateinit var beerTinderAdapter: BeerTinderAdapter
+
 
     private var _binding: BeerTinderFragmentBinding? = null
     private val binding: BeerTinderFragmentBinding
@@ -56,98 +59,107 @@ class BeerTinderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadRandomBeer()
-        newBeer()
-        retryButton()
-        yesButtonClick()
-        noButtonClick()
+//        loadRandomBeer()
+//        newBeer()
+//        retryButton()
+//        yesButtonClick()
+//        noButtonClick()
     }
 
-    private fun loadRandomBeer() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.randomBeer().collect()
-            viewModel.currentBeer.collectLatest {
-                withContext(Dispatchers.Main) {
-                    it.let { resource ->
-                        when (resource.status) {
-                            Status.SUCCESS -> {
-                                resource.data?.let { beer ->
-                                    binding.beerName.text = beer.name
-                                    binding.beerAbv.text = beer.abv.toString()
-                                    binding.beerImage.loadWithCoil(beer.imageUrl)
-                                    binding.beerTagline.text = beer.tagline
-                                    binding.progressBar.isVisible = false
-                                    binding.loadingError.isVisible = false
-                                }
-                            }
-                            Status.ERROR -> {
-                                binding.progressBar.isVisible = true
-                                binding.loadingError.isVisible = true
-                            }
-
-                            Status.LOADING -> {
-                                binding.progressBar.isVisible = true
-                                binding.loadingError.isVisible = false
-                            }
-                        }
-                    }
-                }
-            }
+    private fun setupRecyclerView(){
+        val recyclerView = binding.tinderCardStack
+        with(recyclerView){
+            beerTinderAdapter = BeerTinderAdapter()
+            adapter = beerTinderAdapter
+            layoutManager = CardStackLayoutManager()
         }
     }
 
-    private fun retryButton() {
-        binding.loadingError.setOnClickListener {
-            loadRandomBeer()
-        }
-    }
+//    private fun loadRandomBeer() {
+//        lifecycleScope.launch(Dispatchers.IO) {
+//            viewModel.randomBeer().collect()
+//            viewModel.currentBeer.collectLatest {
+//                withContext(Dispatchers.Main) {
+//                    it.let { resource ->
+//                        when (resource.status) {
+//                            Status.SUCCESS -> {
+//                                resource.data?.let { beer ->
+//                                    binding.beerName.text = beer.name
+//                                    binding.beerAbv.text = beer.abv.toString()
+//                                    binding.beerImage.loadWithCoil(beer.imageUrl)
+//                                    binding.beerTagline.text = beer.tagline
+//                                    binding.progressBar.isVisible = false
+//                                    binding.loadingError.isVisible = false
+//                                }
+//                            }
+//                            Status.ERROR -> {
+//                                binding.progressBar.isVisible = true
+//                                binding.loadingError.isVisible = true
+//                            }
+//
+//                            Status.LOADING -> {
+//                                binding.progressBar.isVisible = true
+//                                binding.loadingError.isVisible = false
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
-    private fun newBeer() {
-        binding.tinderCard.setOnClickListener {
-            loadRandomBeer()
-        }
-    }
-
-    private fun yesButtonClick() {
-        binding.yesButton.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.Main) {
-                val value = viewModel.currentBeer.value
-                value.let { resource ->
-                    when (resource.status) {
-                        Status.SUCCESS -> {
-                            resource.data?.let { currentBeer ->
-                                viewModel.addToFavorite(currentBeer)
-                                ToFavoriteToast.show(
-                                    requireActivity(),
-                                    "Added to Favorite"
-                                )
-                            }
-                        }
-                        Status.ERROR -> {
-                            ToFavoriteToast.show(
-                                requireActivity(),
-                                "Error. Can't add to favorite"
-                            )
-                        }
-
-                        Status.LOADING -> {
-                            ToFavoriteToast.show(
-                                requireActivity(),
-                                "Loading. Can't add to favorite"
-                            )
-                        }
-                    }
-                }
-            }
-            loadRandomBeer()
-        }
-    }
-
-    private fun noButtonClick() {
-        binding.noButton.setOnClickListener {
-            loadRandomBeer()
-        }
-    }
+//    private fun retryButton() {
+//        binding.loadingError.setOnClickListener {
+//            loadRandomBeer()
+//        }
+//    }
+//
+//    private fun newBeer() {
+//        binding.tinderCard.setOnClickListener {
+//            loadRandomBeer()
+//        }
+//    }
+//
+//    private fun yesButtonClick() {
+//        binding.yesButton.setOnClickListener {
+//            lifecycleScope.launch(Dispatchers.Main) {
+//                val value = viewModel.currentBeer.value
+//                value.let { resource ->
+//                    when (resource.status) {
+//                        Status.SUCCESS -> {
+//                            resource.data?.let { currentBeer ->
+//                                viewModel.addToFavorite(currentBeer)
+//                                ToFavoriteToast.show(
+//                                    requireActivity(),
+//                                    "Added to Favorite"
+//                                )
+//                            }
+//                        }
+//                        Status.ERROR -> {
+//                            ToFavoriteToast.show(
+//                                requireActivity(),
+//                                "Error. Can't add to favorite"
+//                            )
+//                        }
+//
+//                        Status.LOADING -> {
+//                            ToFavoriteToast.show(
+//                                requireActivity(),
+//                                "Loading. Can't add to favorite"
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//            loadRandomBeer()
+//        }
+//    }
+//
+//    private fun noButtonClick() {
+//        binding.noButton.setOnClickListener {
+//            loadRandomBeer()
+//        }
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
