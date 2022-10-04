@@ -18,12 +18,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.yuyakaido.android.cardstackview.CardStackView
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/tinder_card_stack"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            tools:listitem="@layout/tinder_recycler_item"
             android:layout_margin="16dp"
+            android:paddingEnd="140dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

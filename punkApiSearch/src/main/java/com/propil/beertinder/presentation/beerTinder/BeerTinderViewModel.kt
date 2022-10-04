@@ -8,10 +8,7 @@ import com.propil.beertinder.domain.logic.LoadRandomBeerUseCase
 import com.propil.beertinder.domain.logic.LoadRandomBeersUseCase
 import com.propil.beertinder.domain.model.Beer
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,6 +21,9 @@ class BeerTinderViewModel @Inject constructor(
     private val _currentBeer = MutableStateFlow<ApiStatus<Beer>>(ApiStatus.loading(null))
     val currentBeer: StateFlow<ApiStatus<Beer>> = _currentBeer.asStateFlow()
 
+    private val _currentBeers = MutableStateFlow<ApiStatus<List<Beer>>>(ApiStatus.loading(null))
+    val currentBeers: StateFlow<ApiStatus<List<Beer>>> = _currentBeers.asStateFlow()
+
     suspend fun randomBeer() = flow<ApiStatus<Beer>> {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -31,6 +31,16 @@ class BeerTinderViewModel @Inject constructor(
             } catch (e: Exception) {
                 _currentBeer.value =
                     ApiStatus.error(data = null, message = "Something went wrong")
+            }
+        }
+    }
+
+    suspend fun randomBeers() = flow<ApiStatus<List<Beer>>> {
+        viewModelScope.launch(Dispatchers.IO) {
+            try{
+                _currentBeers.emit(ApiStatus.success(data = loadRandomBeersUseCase.invoke()))
+            } catch (e: Exception) {
+                _currentBeers.emit(ApiStatus.error(data = null, message = "Something went wrong"))
             }
         }
     }
